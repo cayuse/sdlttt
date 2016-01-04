@@ -1,4 +1,4 @@
-MAIN				= SDLTest
+MAIN				= sdlttt
 
 CXX					= clang++
 CFLAGS				= -std=c++11 -Wall -O3
@@ -33,7 +33,7 @@ LDFLAGS += $(SDL2_LDFLAGS)
 
 all: $(MAIN)
 
-$(MAIN): $(OBJDIR)/SDLTest.cpp.o 
+$(MAIN): $(OBJDIR)/sdlttt.cpp.o 
 	$(CXX) $(LDFLAGS) $< -o $@
 
 $(OBJDIR)/%.cpp.o: $(SRCDIR)/%.cpp $(OBJDIR)

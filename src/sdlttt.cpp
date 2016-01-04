@@ -1,4 +1,5 @@
 #include "res_path.h"
+#include "tttStatus.h"
 
 #ifdef USING_OSX_FRAMEWORKS
 #   include <SDL2/SDL.h>
