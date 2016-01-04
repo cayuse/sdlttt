@@ -61,7 +61,10 @@ bool checkForWins(int &dimension, int &player)
 
 /*
  *  voidReseBoard()
- *  simply resets the array and any other
+ *  checks for a winner and if there was one, increments
+ *  that player's total wins _THEN_
+ *
+ *  resets the gamestate to initial settings
  */
 void resetBoard()
 {
@@ -69,12 +72,12 @@ void resetBoard()
 }
 
 /*
- *  void getScore(int &xWins, int &oWins)
+ *  void getScores(int &xWins, int &oWins)
  *  just stores the current tally of wins for the
  *  players into the int references
  */
 
-void getScore(int &xWins, int &oWins)
+void getScores(int &xWins, int &oWins)
 {
     
 }

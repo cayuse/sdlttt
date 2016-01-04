@@ -32,7 +32,7 @@ public:
     int  getNextTurn();
     bool checkForWins(int &dimension, int &player);
     void resetBoard();
-    void getScore(int &xWins, int &oWins);
+    void getScores(int &xWins, int &oWins);
     void getBoardStatus(int array[][3]);
 }
 
