@@ -1,0 +1,13 @@
+os:
+    - linux
+    - osx
+
+sudo: required
+dist: trusty
+
+language: c++
+compiler: clang
+
+before_install: .travis/before_install.sh
+
+script: make
