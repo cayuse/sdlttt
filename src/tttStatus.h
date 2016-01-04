@@ -6,6 +6,9 @@
  *  The board
 */
 
+// Users for Players and markers
+enum Marker { MT, EX, OH};
+
 class <TttStatus>
 {
 private:
@@ -14,26 +17,19 @@ private:
     */
     static constexpr int BOARD_HW =  3;
     
-    /* the "players" are just ints, but use these
-     * in code in case we change that later
-    */
-    static constexpr int EX       =  1; // X
-    static constexpr int OH       =  2; // O
-    static constexpr int MT       = -1; // Empty
-    
-    int board [BOARD_HW][BOARD_HW] = { MT }; // init board as empty.
-    int next_turn = EX; // init as "its X's move"
+    Marker board [BOARD_HW][BOARD_HW] = { MT }; // init board as empty.
+    Marker next_turn = EX; // init as "its X's move"
     
     int exWins = 0; // init no wins for X
     int ohWins = 0; // init no wins for O
     
 public:
     bool move(int horiz, int vert);
-    int  getNextTurn();
-    bool checkForWins(int &dimension, int &player);
+    Marker getCurrentPlayer();
+    bool checkForWins(int &dimension, Marker &player);
     void resetBoard();
     void getScores(int &xWins, int &oWins);
-    void getBoardStatus(int array[][3]);
+    void getBoardStatus(Marker array[][3]);
 }
 
 

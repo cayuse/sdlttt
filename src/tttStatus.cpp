@@ -21,27 +21,28 @@ bool move(int horiz, int vert)
 }
 
 /*
- *  int getNextTurn()
+ *  Marker getCurrentPlayer()
  *  this method simply returns a value stating whose turn it is:
  *  EX for X || OH for O
  */
 
-int getNextTurn()
+Marker getCurrentPlayer()
 {
     
 }
-
 /*
- *  bool checkForWins(int &dimension, int &player)
+ *  bool checkForWins(int &dimension, Marker &player)
  *  this method checks the status of the game board and
  *  returns information based on that status.
  *
- *  (if) the game has become a catsgame then bool = TRUE 
+ *  (if) the game has become a catsgame then return bool = TRUE 
  *  (if) catsgame or no player has won, then
- *  dimension and player will bet set to MT
+ *       player will bet set to MT
+ *       in this case dimension is undefined
  *
- *  (if) there has been a winner, then the dimension
- *  will be set as follows:
+ *  (if) there has been a winner:
+ *       player is set to EX for X winner and OH for O Winner
+ *       _AND_ the dimension will be set as follows:
  *
  *  Vertical 012
  *  wins     |||
@@ -52,9 +53,8 @@ int getNextTurn()
  *  diagnal 6 /
  *  diagnal 7 \
  *
- *  player is set to EX for X winner and OH for O Winner
  */
-bool checkForWins(int &dimension, int &player)
+bool checkForWins(int &dimension, Marker &player)
 {
     
 }
@@ -97,7 +97,7 @@ void getScores(int &xWins, int &oWins)
  *  [2][0] | [2][1] | [2][2]
  *
  */
-void getBoardStatus(int array[][BOARD_HW])
+void getBoardStatus(Marker array[][BOARD_HW])
 {
     
 }
