@@ -139,7 +139,7 @@ int main(int argc, char **argv){
     const std::string boardPath = getResourcePath("boards");
     auto board = loadTexture(boardPath + "board.png", renderer.get());
     // pieces
-    const std::sting piecesPath = getResourcePath("pieces");
+    const std::string piecesPath = getResourcePath("pieces");
     auto ex = loadTexture(piecesPath + "ex.png", renderer.get());
     auto oh = loadTexture(piecesPath + "oh.png", renderer.get());
     
@@ -153,7 +153,7 @@ int main(int argc, char **argv){
     SDL_RenderClear(renderer.get());
 
     renderTexture(background.get(), renderer.get(), (SCREEN_WIDTH / 2), (SCREEN_HEIGHT / 2) );
-    renderTexture(board.get(), renderer.get(), BOARD_X, BOARD_Y );
+   // renderTexture(board.get(), renderer.get(), BOARD_X, BOARD_Y );
 
 
     SDL_RenderPresent(renderer.get());
