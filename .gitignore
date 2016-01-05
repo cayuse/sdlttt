@@ -75,6 +75,13 @@ Network Trash Folder
 Temporary Items
 .apdisk
 
+###################
+# IDE-Junk        #
+###################
+
+*.komodoproject
+*.idea
+
 
 ####################
 # Project-specific #
