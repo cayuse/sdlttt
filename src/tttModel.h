@@ -1,5 +1,5 @@
-#ifndef _SDLTTT_STATUS
-#define _SDLTTT_STATUS
+#ifndef _SDLTTT_MODEL
+#define _SDLTTT_MODEL
 
 
 /*
@@ -9,7 +9,7 @@
 // Users for Players and markers
 enum Marker { MT, EX, OH};
 
-class <TttStatus>
+class <TttModel>
 {
 private:
     /* board height/width. Doing it this way in case we make different
