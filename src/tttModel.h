@@ -9,7 +9,7 @@
 // Users for Players and markers
 enum Marker { MT, EX, OH};
 
-class <TttModel>
+class TttModel
 {
 private:
     /* board height/width. Doing it this way in case we make different
