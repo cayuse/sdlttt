@@ -108,7 +108,7 @@ int main(int argc, char **argv){
     cleanup_unique_ptr<SDL_Window> window(
         SDL_CreateWindow(
             "Tic Tac Toe",
-            100, 100,
+            50, 50,
             SCREEN_WIDTH, SCREEN_HEIGHT,
             SDL_WINDOW_SHOWN),
         SDL_DestroyWindow);
