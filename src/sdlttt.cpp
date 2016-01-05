@@ -21,8 +21,8 @@ using cleanup_unique_ptr = std::unique_ptr<T, void (*)(T *)>;
 const int SCREEN_WIDTH  = 800;
 const int SCREEN_HEIGHT = 600;
 
-const int BOARD_X = 520;
-const int BOARD_Y = 280;
+const int BOARD_X = 270;
+const int BOARD_Y = 70;
 
 /**
 * Log an SDL error with some error message to the output stream of our choice
@@ -152,8 +152,12 @@ int main(int argc, char **argv){
     //initial display stuff.. this needs to be put into a function eventually... all this does.. or better yet a class
     SDL_RenderClear(renderer.get());
 
-    renderTexture(background.get(), renderer.get(), (SCREEN_WIDTH / 2), (SCREEN_HEIGHT / 2) );
-   // renderTexture(board.get(), renderer.get(), BOARD_X, BOARD_Y );
+    renderTexture(background.get(), renderer.get(), 0, 0 );
+    renderTexture(board.get(), renderer.get(), BOARD_X, BOARD_Y );
+    renderTexture(ex.get(),    renderer.get(), 270, 70 );
+    renderTexture(ex.get(),    renderer.get(), 436, 70 );
+    renderTexture(oh.get(),    renderer.get(), 436, 236 );
+//    renderTexture(ex.get(),    renderer.get(), 360, 160);
 
 
     SDL_RenderPresent(renderer.get());
