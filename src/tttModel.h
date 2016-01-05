@@ -8,6 +8,7 @@
 
 // Users for Players and markers
 enum Marker { MT, EX, OH};
+const int BOARD_HW =  3;
 
 class TttModel
 {
@@ -15,7 +16,6 @@ private:
     /* board height/width. Doing it this way in case we make different
      * games.. All games that start with this mess should be square
     */
-    static constexpr int BOARD_HW =  3;
     
     Marker board [BOARD_HW][BOARD_HW] = { {MT} }; // init board as empty.
     Marker next_turn = EX; // init as "its X's move"

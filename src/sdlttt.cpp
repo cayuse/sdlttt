@@ -96,12 +96,13 @@ void renderTextureXY(SDL_Texture *tex, SDL_Renderer *ren, int x, int y)
     int x_offset = w / 2;
     int y_offset = h / 2;
     
-    int width = BOARD_SIZE / BOARD_HW;
+    int half_width = (BOARD_SIZE / BOARD_HW) / 2;
     int x_cent, y_cent;
     
-    x_cent = ( (width * x) / BOARD_HW ) + BOARD_X - x_offset;
-    y_cent = ( (width * y) / BOARD_HW ) + BOARD_Y - y_offset;
-    
+    x_cent = ( (BOARD_SIZE * x) / BOARD_HW ) + BOARD_X - half_width - x_offset;
+    y_cent = ( (BOARD_SIZE * y) / BOARD_HW ) + BOARD_Y - half_width - y_offset;
+
+    renderTexture(tex, ren, x_cent, y_cent, w, h);
 }
 
 int main(int argc, char **argv){
@@ -178,7 +179,7 @@ int main(int argc, char **argv){
     renderTextureXY(ex.get(),    renderer.get(), 1, 1 );
     renderTextureXY(ex.get(),    renderer.get(), 1, 2 );
     renderTextureXY(oh.get(),    renderer.get(), 2, 2 );
-//    renderTexture(ex.get(),    renderer.get(), 360, 160);
+    renderTextureXY(oh.get(),    renderer.get(), 3, 3 );
 
 
     SDL_RenderPresent(renderer.get());
