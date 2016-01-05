@@ -82,27 +82,9 @@ void renderTexture(SDL_Texture *tex, SDL_Renderer *ren, int x, int y){
     renderTexture(tex, ren, x, y, w, h);
 }
 
-/**
-* Draw an SDL_Texture to an SDL_Renderer at position x, y, preserving
-* the texture's width and height
-* @param tex The source texture we want to draw
-* @param ren The renderer we want to draw to
-* @param x The x coordinate to draw to
-* @param y The y coordinate to draw to
- 
-void renderTexture(SDL_Texture *tex, SDL_Renderer *ren, int x, int y){
- //Setup the destination rectangle to be at the position we want
- SDL_Rect dst;
- dst.x = x;
- dst.y = y;
- //Query the texture to get its width and height to use
- SDL_QueryTexture(tex, NULL, NULL, &dst.w, &dst.h);
- SDL_RenderCopy(ren, tex, NULL, &dst);
-}*/
-
-
 int main(int argc, char **argv){
-
+    
+    // Main SDL Init
     if (SDL_Init(SDL_INIT_EVERYTHING) != 0)
     {
         logSDLError(std::cout, "SDL_Init");
@@ -111,6 +93,7 @@ int main(int argc, char **argv){
     
     atexit(SDL_Quit);
 
+    // Init SDL Image specifically for png files
     if ((IMG_Init(IMG_INIT_PNG) & IMG_INIT_PNG) != IMG_INIT_PNG)
     {
         logSDLError(std::cout, "IMG_Init");
@@ -119,6 +102,8 @@ int main(int argc, char **argv){
     
     atexit(IMG_Quit);
     
+    // not exactly sure how this works, its wrappng the window intit into some sort of templeted
+    // pointer cleanup goodness
     cleanup_unique_ptr<SDL_Window> window(
         SDL_CreateWindow(
             "Tic Tac Toe",
@@ -132,6 +117,7 @@ int main(int argc, char **argv){
         return 1;
     }
     
+    // same as above, but wrapping the creation of a renderer into a pointer cleaner upper???
     cleanup_unique_ptr<SDL_Renderer> renderer(
         SDL_CreateRenderer(
             window.get(),
