@@ -4,7 +4,11 @@ http://colors.findthedata.com/l/340/Bondi-Blue
 
 
 Game Area is 500x500px and is centered at (520,280)
+Game Area corner is (270,70)
 
 Score Area is 130x290 and centered at (165, 370)
+remains TBD
 
 Note that y-axis may be reversed in SDL
+
+render is relative to 0,0 (top left)

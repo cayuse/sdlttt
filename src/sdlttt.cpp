@@ -21,6 +21,7 @@ using cleanup_unique_ptr = std::unique_ptr<T, void (*)(T *)>;
 const int SCREEN_WIDTH  = 800;
 const int SCREEN_HEIGHT = 600;
 
+const int BOARD_SIZE = 500;
 const int BOARD_X = 270;
 const int BOARD_Y = 70;
 
@@ -81,6 +82,26 @@ void renderTexture(SDL_Texture *tex, SDL_Renderer *ren, int x, int y){
     int w, h;
     SDL_QueryTexture(tex, NULL, NULL, &w, &h);
     renderTexture(tex, ren, x, y, w, h);
+}
+
+/**
+ * Draw an SDL_Texture to a cell on the board (located at x,y) preserving
+ * the texture's width and height, but centered within that location
+ * this method is aware of the concept of a 'board'
+*/
+void renderTextureXY(SDL_Texture *tex, SDL_Renderer *ren, int x, int y)
+{
+    int w, h;
+    SDL_QueryTexture(tex, NULL, NULL, &w, &h);
+    int x_offset = w / 2;
+    int y_offset = h / 2;
+    
+    int width = BOARD_SIZE / BOARD_HW;
+    int x_cent, y_cent;
+    
+    x_cent = ( (width * x) / BOARD_HW ) + BOARD_X - x_offset;
+    y_cent = ( (width * y) / BOARD_HW ) + BOARD_Y - y_offset;
+    
 }
 
 int main(int argc, char **argv){
@@ -154,9 +175,9 @@ int main(int argc, char **argv){
 
     renderTexture(background.get(), renderer.get(), 0, 0 );
     renderTexture(board.get(), renderer.get(), BOARD_X, BOARD_Y );
-    renderTexture(ex.get(),    renderer.get(), 270, 70 );
-    renderTexture(ex.get(),    renderer.get(), 436, 70 );
-    renderTexture(oh.get(),    renderer.get(), 436, 236 );
+    renderTextureXY(ex.get(),    renderer.get(), 1, 1 );
+    renderTextureXY(ex.get(),    renderer.get(), 1, 2 );
+    renderTextureXY(oh.get(),    renderer.get(), 2, 2 );
 //    renderTexture(ex.get(),    renderer.get(), 360, 160);
 
 
