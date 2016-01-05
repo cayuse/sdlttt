@@ -1,0 +1,11 @@
+Bondi Blue:
+
+http://colors.findthedata.com/l/340/Bondi-Blue
+
+
+Game Area is 500x500px and is centered at (520,280)
+
+
+Score Area is 130x290 and centered at (165, 370)
+
+Note that y-axis may be reversed in SDL
