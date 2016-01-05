@@ -1,5 +1,5 @@
 #include "res_path.h"
-#include "tttStatus.h"
+#include "tttModel.h"
 
 #ifdef USING_OSX_FRAMEWORKS
 #   include <SDL2/SDL.h>
@@ -18,9 +18,8 @@
 template<typename T>
 using cleanup_unique_ptr = std::unique_ptr<T, void (*)(T *)>;
 
-const int SCREEN_WIDTH  = 640;
-const int SCREEN_HEIGHT = 480;
-const int TILE_SIZE = 40;
+const int SCREEN_WIDTH  = 800;
+const int SCREEN_HEIGHT = 600;
 
 
 /**
@@ -130,15 +129,6 @@ int main(int argc, char **argv){
         return 1;
     }
 
-    /*
-    const std::string resPath = getResourcePath("Lesson2");
-    SDL_Texture *background = loadTexture(resPath + "background.bmp", renderer);
-    SDL_Texture *image = loadTexture(resPath + "image.bmp", renderer);
-    if (background == nullptr || image == nullptr){
-     cleanup(background, image, renderer, window);
-     return 1;
-}
-    */
 
     const std::string resPath = getResourcePath("Lesson3");
     auto background = loadTexture(resPath + "background.png", renderer.get());
