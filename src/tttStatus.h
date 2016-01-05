@@ -29,7 +29,7 @@ public:
     bool checkForWins(int &dimension, Marker &player);
     void resetBoard();
     void getScores(int &xWins, int &oWins);
-    void getBoardStatus(Marker array[][3]);
+    Marker getMarkerAt(int horiz, int vert);
 }
 
 

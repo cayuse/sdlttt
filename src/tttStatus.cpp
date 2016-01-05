@@ -83,12 +83,11 @@ void getScores(int &xWins, int &oWins)
 }
 
 /*
- *  void getBoardStatus(int array[][3])
+ *  Marker getMarkerAt(int horiz, int vert)
  *
- *  this will essentially copy the master array status into a 'passed-in' array
- *  so that the rendering system can draw it quicker.
+ *  this will return the marker at the specified location
  *
- *  to be clear, the array will be expected in this order relative to the board
+ *  it should match the contents of the array.
  *
  *  [0][0] | [0][1] | [0][2]
  * --------|--------|--------
@@ -97,7 +96,7 @@ void getScores(int &xWins, int &oWins)
  *  [2][0] | [2][1] | [2][2]
  *
  */
-void getBoardStatus(Marker array[][BOARD_HW])
+Marker getMarkerAt(int horiz, int vert)
 {
     
 }
