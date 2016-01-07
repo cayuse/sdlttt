@@ -1,6 +1,6 @@
 #include "tttModel.h"
 
-/*  bool move(int location)
+/*  bool move(int horiz, int vert)
  *  This method is used to place a move on the board.
  *  The move is given as a pair of ints, and references the board as such.
  *  [0][0] | [0][1] | [0][2]
