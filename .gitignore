@@ -31,6 +31,9 @@
 *.out
 *.app
 
+#some clang bs
+CMakeLists.txt
+
 
 ################
 # Global/Linux #
