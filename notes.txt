@@ -12,3 +12,6 @@ remains TBD
 Note that y-axis may be reversed in SDL
 
 render is relative to 0,0 (top left)
+
+here is a list of some interesting textures for later use
+http://tophdimg.com/ocean-texture-seamless.html

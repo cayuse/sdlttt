@@ -87,12 +87,17 @@ void renderTexture(SDL_Texture *tex, SDL_Renderer *ren, int x, int y){
 /**
  * Draw an SDL_Texture to a cell on the board (located at x,y) preserving
  * the texture's width and height, but centered within that location
- * this method is aware of the concept of a 'board'
+ * this method is aware of the concept of a 'board' and is zero referenced
+ * i.e. call with renderTextureXY(tex, ren, 0, 0) for upper left square
 */
 void renderTextureXY(SDL_Texture *tex, SDL_Renderer *ren, int x, int y)
 {
+    x++;
+    y++;
+    
     int w, h;
     SDL_QueryTexture(tex, NULL, NULL, &w, &h);
+    
     int x_offset = w / 2;
     int y_offset = h / 2;
     

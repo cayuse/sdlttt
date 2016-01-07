@@ -18,7 +18,7 @@ private:
     */
     
     Marker board [BOARD_HW][BOARD_HW] = { {MT} }; // init board as empty.
-    Marker next_turn = EX; // init as "its X's move"
+    Marker current_player = EX; // init as "its X's move"
     
     int exWins = 0; // init no wins for X
     int ohWins = 0; // init no wins for O
@@ -26,7 +26,8 @@ private:
 public:
     bool move(int horiz, int vert);
     Marker getCurrentPlayer();
-    bool checkForWins(int &dimension, Marker &player);
+    bool checkForWins(Marker &player);
+    bool getWinDimension(int &x1, int &y1, int &x2, int &y2);
     void resetBoard();
     void getScores(int &xWins, int &oWins);
     Marker getMarkerAt(int horiz, int vert);
