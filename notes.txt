@@ -15,3 +15,29 @@ render is relative to 0,0 (top left)
 
 here is a list of some interesting textures for later use
 http://tophdimg.com/ocean-texture-seamless.html
+
+
+#######################
+#                     #
+# Useful Git Commands #
+#                     #
+#######################
+
+# to get a new repo use github to find the url but for this one its
+git clone https://github.com/cayuse/sdlttt.git
+
+# to get any changes from the git repo
+git pull
+
+# to check how many files have changed or been added since last push
+git status
+
+# to stage your changes in preparation of pushing
+git add .
+
+# to commit your changes.. i find it easier to make the msg short and put it
+# on the command line, otherwise you will end up in some random editor and its a pain
+git commit -m "some useful message"
+
+# to push all your changes into the master repo
+git push
