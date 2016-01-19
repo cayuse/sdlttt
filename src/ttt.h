@@ -2,15 +2,10 @@
 #define _SDLTTT_MODEL
 
 
-/*
- *  The board
-*/
-
-// Users for Players and markers
-enum Marker { MT, EX, OH};
 const int BOARD_HW =  3;
 
-class TttModel
+// Class Definition for Tic Tac Toe
+class Ttt: public bondiGameInterface
 {
 private:
     /* board height/width. Doing it this way in case we make different

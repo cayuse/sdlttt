@@ -15,7 +15,7 @@
  *  it puts the current player's "token" on that spot _AND_
  *  it changes the current_player variable (to the other player)
  */
-bool move(int horiz, int vert)
+bool Ttt::move(int horiz, int vert)
 {
     
 }
@@ -25,7 +25,7 @@ bool move(int horiz, int vert)
  *  this method simply returns a Marker corresponding to whose turn it is:
  *  EX for X || OH for O
  */
-Marker getCurrentPlayer()
+Marker Ttt::getCurrentPlayer()
 {
     
 }
@@ -42,7 +42,7 @@ Marker getCurrentPlayer()
  *  (if) there has been a winner:
  *       player is set to EX for X winner and OH for O Winner
  */
-bool checkForWins(Marker &player)
+bool Ttt::checkForWins(Marker &player)
 {
     
 }
@@ -61,7 +61,7 @@ bool checkForWins(Marker &player)
  * (if) this is not appropriate and the board should not be marked
  *      return false (e.g. othello)
 */
-bool getWinDimension(int &x1, int &y1, int &x2, int &y2)
+bool Ttt::getWinDimension(int &x1, int &y1, int &x2, int &y2)
 {
   
 }
@@ -73,7 +73,7 @@ bool getWinDimension(int &x1, int &y1, int &x2, int &y2)
  *
  *  resets the gamestate to initial settings
  */
-void resetBoard()
+void Ttt::resetBoard()
 {
     
 }
@@ -83,7 +83,7 @@ void resetBoard()
  *  just stores the current tally of wins for the
  *  players into the int references
  */
-void getScores(int &xWins, int &oWins)
+void Ttt::getScores(int &xWins, int &oWins)
 {
     
 }
@@ -100,7 +100,7 @@ void getScores(int &xWins, int &oWins)
  *  [2][0] | [2][1] | [2][2]
  *
  */
-Marker getMarkerAt(int horiz, int vert)
+Marker Ttt::getMarkerAt(int horiz, int vert)
 {
     
 }
