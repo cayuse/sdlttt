@@ -2,6 +2,7 @@
 #define _TTT_
 
 #include "bondiGameInterface.h"
+#include <string>
 
 const int BOARD_HW =  3;
 
