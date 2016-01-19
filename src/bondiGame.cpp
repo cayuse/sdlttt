@@ -1,5 +1,6 @@
 #include "res_path.h"
-#include "tttModel.h"
+#include "bondiGameInterface.h"
+#include "ttt.h"
 
 #ifdef USING_OSX_FRAMEWORKS
 #   include <SDL2/SDL.h>

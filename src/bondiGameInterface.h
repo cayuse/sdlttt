@@ -1,3 +1,5 @@
+#ifndef _BONDIGAMEINTERFACE_
+#define _BONDIGAMEINTERFACE_
 
 enum Marker { MT, EX, OH};
 
@@ -12,3 +14,6 @@ public:
     virtual void getScores(int &xWins, int &oWins) = 0;
     virtual Marker getMarkerAt(int horiz, int vert) = 0;
 };
+
+
+#endif

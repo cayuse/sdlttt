@@ -1,4 +1,4 @@
-MAIN				= sdlttt
+MAIN				= bondiGames
 
 CXX					= clang++
 CFLAGS				= -std=c++11 -Wall -O3

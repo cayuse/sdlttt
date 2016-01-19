@@ -1,6 +1,7 @@
-#ifndef _SDLTTT_MODEL
-#define _SDLTTT_MODEL
+#ifndef _TTT_
+#define _TTT_
 
+#include "bondiGameInterface.h"
 
 const int BOARD_HW =  3;
 
