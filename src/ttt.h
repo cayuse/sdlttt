@@ -19,12 +19,12 @@ private:
     
     int exWins = 0; // init no wins for X
     int ohWins = 0; // init no wins for O
-    std::string board   = "tttboard.png";
+    std::string boardBG   = "tttboard.png";
     std::string exPiece = "tttex.png";
     std::string ohPiece = "tttoh.png";
     
 public:
-    std::string getBoard();
+    std::string getBoardBG();
     std::string getExPiece();
     std::string getOhPiece();
     bool move(int horiz, int vert);

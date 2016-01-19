@@ -33,7 +33,7 @@ LDFLAGS += $(SDL2_LDFLAGS)
 
 all: $(MAIN)
 
-$(MAIN): $(OBJDIR)/ttt.cpp.o 
+$(MAIN): $(OBJDIR)/bondiGame.cpp.o $(OBJDIR)/ttt.cpp.o 
 	$(CXX) $(LDFLAGS) $< -o $@
 
 $(OBJDIR)/%.cpp.o: $(SRCDIR)/%.cpp $(OBJDIR)

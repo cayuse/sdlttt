@@ -9,7 +9,7 @@ enum Marker { MT, EX, OH};
 class bondiGameInterface
 {
 public:
-    virtual std::string getBoard() = 0;
+    virtual std::string getBoardBG() = 0;
     virtual std::string getExPiece() = 0;
     virtual std::string getOhPiece() = 0;
     virtual bool move(int horiz, int vert) = 0;
