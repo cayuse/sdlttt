@@ -6,6 +6,9 @@ enum Marker { MT, EX, OH};
 class bondiGameInterface
 {
 public:
+    virtual string getBoard() = 0;
+    virtual string getExPiece() = 0;
+    virtual string getOhPiece() = 0;
     virtual bool move(int horiz, int vert) = 0;
     virtual Marker getCurrentPlayer() = 0;
     virtual bool checkForWins(Marker &player) = 0;

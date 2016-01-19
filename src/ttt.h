@@ -18,8 +18,14 @@ private:
     
     int exWins = 0; // init no wins for X
     int ohWins = 0; // init no wins for O
+    string board   = "tttboard.png";
+    string exPiece = "tttex.png";
+    string ohPiece = "tttoh.png";
     
 public:
+    string getBoard();
+    string getExPiece();
+    string getOhPiece();
     bool move(int horiz, int vert);
     Marker getCurrentPlayer();
     bool checkForWins(Marker &player);

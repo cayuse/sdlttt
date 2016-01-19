@@ -158,6 +158,9 @@ int main(int argc, char **argv){
         logSDLError(std::cout, "CreateRenderer");
         return 1;
     }
+
+    // create instance of ttt
+    ttt tictac;
     
     // LOAD ALL THE Images
     // background
@@ -165,11 +168,11 @@ int main(int argc, char **argv){
     auto background = loadTexture(backgroundPath + "background.png", renderer.get());
     // board
     const std::string boardPath = getResourcePath("boards");
-    auto board = loadTexture(boardPath + "board.png", renderer.get());
+    auto board = loadTexture(boardPath + tictac.getBoard(), renderer.get());
     // pieces
     const std::string piecesPath = getResourcePath("pieces");
-    auto ex = loadTexture(piecesPath + "ex.png", renderer.get());
-    auto oh = loadTexture(piecesPath + "oh.png", renderer.get());
+    auto ex = loadTexture(piecesPath + tictac.getExPiece(), renderer.get());
+    auto oh = loadTexture(piecesPath + tictac.getOhPiece(), renderer.get());
     
     //Make sure they all loaded ok
     if (background == nullptr || board == nullptr || ex == nullptr || oh == nullptr)

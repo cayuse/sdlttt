@@ -1,5 +1,19 @@
 #include "ttt.h"
 
+// these functions just return the name of the file defined in the header so the game engine can load them up.
+string getBoard()
+{
+  return board;
+}
+string getExPiece()
+{
+  return exPiece;
+} 
+string getOhPiece()
+{
+  return ohPiece;
+}
+
 /*  bool move(int horiz, int vert)
  *  This method is used to place a move on the board.
  *  The move is given as a pair of ints, and references the board as such.
