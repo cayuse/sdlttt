@@ -17,7 +17,8 @@
  */
 bool Ttt::move(int horiz, int vert)
 {
-    
+  //stub return to supress whining
+  return true;
 }
 
 /*
@@ -27,7 +28,8 @@ bool Ttt::move(int horiz, int vert)
  */
 Marker Ttt::getCurrentPlayer()
 {
-    
+  //stub return to supress whining
+  return MT;
 }
 
 /*
@@ -44,7 +46,8 @@ Marker Ttt::getCurrentPlayer()
  */
 bool Ttt::checkForWins(Marker &player)
 {
-    
+  //stub return to supress whining
+  return true;
 }
 
 /*
@@ -63,7 +66,8 @@ bool Ttt::checkForWins(Marker &player)
 */
 bool Ttt::getWinDimension(int &x1, int &y1, int &x2, int &y2)
 {
-  
+  //stub return to supress whining
+  return true;
 }
 
 /*
@@ -75,7 +79,7 @@ bool Ttt::getWinDimension(int &x1, int &y1, int &x2, int &y2)
  */
 void Ttt::resetBoard()
 {
-    
+  
 }
 
 /*
@@ -85,7 +89,7 @@ void Ttt::resetBoard()
  */
 void Ttt::getScores(int &xWins, int &oWins)
 {
-    
+  
 }
 
 /*
@@ -102,5 +106,6 @@ void Ttt::getScores(int &xWins, int &oWins)
  */
 Marker Ttt::getMarkerAt(int horiz, int vert)
 {
-    
+  //stub return to supress whining
+  return EX;
 }
