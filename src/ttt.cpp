@@ -1,15 +1,15 @@
 #include "ttt.h"
 
 // these functions just return the name of the file defined in the header so the game engine can load them up.
-string getBoard()
+std::string Ttt::getBoard()
 {
   return board;
 }
-string getExPiece()
+std::string Ttt::getExPiece()
 {
   return exPiece;
 } 
-string getOhPiece()
+std::string Ttt::getOhPiece()
 {
   return ohPiece;
 }

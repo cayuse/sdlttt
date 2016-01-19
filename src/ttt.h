@@ -2,7 +2,7 @@
 #define _TTT_
 
 #include "bondiGameInterface.h"
-#include <string>
+
 
 const int BOARD_HW =  3;
 
@@ -19,14 +19,14 @@ private:
     
     int exWins = 0; // init no wins for X
     int ohWins = 0; // init no wins for O
-    string board   = "tttboard.png";
-    string exPiece = "tttex.png";
-    string ohPiece = "tttoh.png";
+    std::string board   = "tttboard.png";
+    std::string exPiece = "tttex.png";
+    std::string ohPiece = "tttoh.png";
     
 public:
-    string getBoard();
-    string getExPiece();
-    string getOhPiece();
+    std::string getBoard();
+    std::string getExPiece();
+    std::string getOhPiece();
     bool move(int horiz, int vert);
     Marker getCurrentPlayer();
     bool checkForWins(Marker &player);
