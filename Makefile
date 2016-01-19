@@ -33,7 +33,7 @@ LDFLAGS += $(SDL2_LDFLAGS)
 
 all: $(MAIN)
 
-$(MAIN): $(OBJDIR)/sdlttt.cpp.o 
+$(MAIN): $(OBJDIR)/ttt.cpp.o 
 	$(CXX) $(LDFLAGS) $< -o $@
 
 $(OBJDIR)/%.cpp.o: $(SRCDIR)/%.cpp $(OBJDIR)

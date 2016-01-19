@@ -1,4 +1,4 @@
-#include "tttModel.h"
+#include "ttt.h"
 
 /*  bool move(int horiz, int vert)
  *  This method is used to place a move on the board.
