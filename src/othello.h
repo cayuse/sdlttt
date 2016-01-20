@@ -12,15 +12,15 @@ private:
      * this may change if i get ambitious
     */
     
-    Marker board [BOARD_HW][BOARD_HW] = { {MT} }; // init board as empty.
-    Marker current_player = EX; // init as "its X's move"
-    
     int exWins  = 0; // init no wins for X
     int ohWins  = 0; // init no wins for O
-    int boardHW = 8; // board height and width
-    std::string boardBG = "connectboard.png";
-    std::string exPiece = "connectex.png";
-    std::string ohPiece = "connectoh.png";
+    int boardHW = 8; // height/width of board
+    std::string boardBG = "tttboard.png";
+    std::string exPiece = "tttex.png";
+    std::string ohPiece = "tttoh.png";
+
+    Marker board [boardHW][boardHW] = { {MT} }; // init board as empty.
+    Marker current_player = EX; // init as "its X's move"
     
 public:
     std::string getBoardBG();

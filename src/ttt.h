@@ -13,15 +13,15 @@ private:
      * games.. All games that start with this mess should be square
     */
     
-    Marker board [BOARD_HW][BOARD_HW] = { {MT} }; // init board as empty.
-    Marker current_player = EX; // init as "its X's move"
-    
     int exWins  = 0; // init no wins for X
     int ohWins  = 0; // init no wins for O
     int boardHW = 3; // height/width of board
     std::string boardBG = "tttboard.png";
     std::string exPiece = "tttex.png";
     std::string ohPiece = "tttoh.png";
+
+    Marker board [boardHW][boardHW] = { {MT} }; // init board as empty.
+    Marker current_player = EX; // init as "its X's move"
     
 public:
     std::string getBoardBG();
