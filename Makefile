@@ -28,6 +28,7 @@ endif
 CFLAGS += $(SDL2_CFLAGS)
 LDFLAGS += $(SDL2_LDFLAGS)
 
+.PHONY: all
 all: $(MAIN)
 
 $(MAIN): $(OBJDIR)/bondiGame.cpp.o $(OBJDIR)/ttt.cpp.o 
