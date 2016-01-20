@@ -1,15 +1,15 @@
-#include "ttt.h"
+#include "othello.h"
 
 // these functions just return the name of the file defined in the header so the game engine can load them up.
-std::string Ttt::getBoardBG()
+std::string Othello::getBoardBG()
 {
   return boardBG;
 }
-std::string Ttt::getExPiece()
+std::string Othello::getExPiece()
 {
   return exPiece;
 } 
-std::string Ttt::getOhPiece()
+std::string Othello::getOhPiece()
 {
   return ohPiece;
 }
@@ -17,19 +17,24 @@ std::string Ttt::getOhPiece()
 /*  bool move(int horiz, int vert)
  *  This method is used to place a move on the board.
  *  The move is given as a pair of ints, and references the board as such.
- *  [0][0] | [0][1] | [0][2]
- * --------|--------|--------
- *  [1][0] | [1][1] | [1][2]
- * --------|--------|--------
- *  [2][0] | [2][1] | [2][2]
+ *  in the case of Connect-4, 'legal moves' should be allowed anywhere on a
+ *  column with space at the top
+ *  this is just representitive.. the whole array is 8x8
  *
- *  (if) the location for the move is taken, then the method returns FALSE
+ *  [0][0] |   ...  | [0][7]
+ * --------|--------|--------
+ *    ...  | [4][4] |   ...
+ * --------|--------|--------
+ *  [7][0] |   ...  | [7][7]
+ *
+ *
+ *  (if) the column for the move is full, then the method returns FALSE
  *  
- *  (if) the location is available, then the method returns TRUE  _AND_
- *  it puts the current player's "token" on that spot _AND_
+ *  (if) the column has room, then the method returns TRUE  _AND_
+ *  it puts the current player's "token" in that column  _AND_
  *  it changes the current_player variable (to the other player)
  */
-bool Ttt::move(int horiz, int vert)
+bool Othello::move(int horiz, int vert)
 {
   //stub return to supress whining
   return true;
@@ -40,7 +45,7 @@ bool Ttt::move(int horiz, int vert)
  *  this method simply returns a Marker corresponding to whose turn it is:
  *  EX for X || OH for O
  */
-Marker Ttt::getCurrentPlayer()
+Marker Othello::getCurrentPlayer()
 {
   //stub return to supress whining
   return MT;
@@ -58,7 +63,7 @@ Marker Ttt::getCurrentPlayer()
  *  (if) there has been a winner:
  *       player is set to EX for X winner and OH for O Winner
  */
-bool Ttt::checkForWins(Marker &player)
+bool Othello::checkForWins(Marker &player)
 {
   //stub return to supress whining
   return true;
@@ -68,7 +73,7 @@ bool Ttt::checkForWins(Marker &player)
  * bool getWinDimension(int &x1, int &y1, int &x2, int &y2)
  * this method sets x1,y1 and x2,y2 to mark the location of
  * the win.
- * in ttt that might be (0,0),(2,2) or (0,0),(0,2) whatever
+ * in ttt that might be (0,0),(3,3) or (0,0),(0,3) whatever
  * it will be slightly more interesting in something like
  * connect 4 where it can be any 4 anywhere in the field.
  * 
@@ -78,7 +83,7 @@ bool Ttt::checkForWins(Marker &player)
  * (if) this is not appropriate and the board should not be marked
  *      return false (e.g. othello)
 */
-bool Ttt::getWinDimension(int &x1, int &y1, int &x2, int &y2)
+bool Othello::getWinDimension(int &x1, int &y1, int &x2, int &y2)
 {
   //stub return to supress whining
   return true;
@@ -91,7 +96,7 @@ bool Ttt::getWinDimension(int &x1, int &y1, int &x2, int &y2)
  *
  *  resets the gamestate to initial settings
  */
-void Ttt::resetBoard()
+void Othello::resetBoard()
 {
   
 }
@@ -101,7 +106,7 @@ void Ttt::resetBoard()
  *  just stores the current tally of wins for the
  *  players into the int references
  */
-void Ttt::getScores(int &xWins, int &oWins)
+void Othello::getScores(int &xWins, int &oWins)
 {
   
 }
@@ -110,15 +115,16 @@ void Ttt::getScores(int &xWins, int &oWins)
  *  Marker getMarkerAt(int horiz, int vert)
  *  this will return the marker at the specified location
  *  it should match the contents of the array.
+ *  this is just representitive.. the whole array is 8x8
  *
- *  [0][0] | [0][1] | [0][2]
+ *  [0][0] |   ...  | [0][7]
  * --------|--------|--------
- *  [1][0] | [1][1] | [1][2]
+ *    ...  | [4][4] |   ...
  * --------|--------|--------
- *  [2][0] | [2][1] | [2][2]
+ *  [7][0] |   ...  | [7][7]
  *
  */
-Marker Ttt::getMarkerAt(int horiz, int vert)
+Marker Othello::getMarkerAt(int horiz, int vert)
 {
   //stub return to supress whining
   return EX;

@@ -1,17 +1,18 @@
-#ifndef _TTT_
-#define _TTT_
+#ifndef _CONNECT_
+#define _CONNECT_
 
 #include "bondiGameInterface.h"
 
 
-const int BOARD_HW =  3;
+const int BOARD_HW =  8;
 
 // Class Definition for Tic Tac Toe
-class Ttt: public bondiGameInterface
+class Connect: public bondiGameInterface
 {
 private:
     /* board height/width. Doing it this way in case we make different
      * games.. All games that start with this mess should be square
+     * this may change if i get ambitious
     */
     
     Marker board [BOARD_HW][BOARD_HW] = { {MT} }; // init board as empty.
@@ -19,9 +20,9 @@ private:
     
     int exWins = 0; // init no wins for X
     int ohWins = 0; // init no wins for O
-    std::string boardBG = "tttboard.png";
-    std::string exPiece = "tttex.png";
-    std::string ohPiece = "tttoh.png";
+    std::string boardBG = "connectboard.png";
+    std::string exPiece = "connectex.png";
+    std::string ohPiece = "connectoh.png";
     
 public:
     std::string getBoardBG();
