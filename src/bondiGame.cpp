@@ -1,6 +1,8 @@
 #include "res_path.h"
 #include "bondiGameInterface.h"
 #include "ttt.h"
+#include "othello.h"
+#include "connect.h"
 
 #ifdef USING_OSX_FRAMEWORKS
 #   include <SDL2/SDL.h>
@@ -89,9 +91,9 @@ void renderTexture(SDL_Texture *tex, SDL_Renderer *ren, int x, int y){
  * Draw an SDL_Texture to a cell on the board (located at x,y) preserving
  * the texture's width and height, but centered within that location
  * this method is aware of the concept of a 'board' and is zero referenced
- * i.e. call with renderTextureXY(tex, ren, 0, 0) for upper left square
+ * i.e. call with renderTextureXY(tex, ren, 3, 0, 0) for upper left square
 */
-void renderTextureXY(SDL_Texture *tex, SDL_Renderer *ren, int x, int y)
+void renderTextureXY(SDL_Texture *tex, SDL_Renderer *ren, int hw, int x, int y)
 {
     x++;
     y++;
@@ -102,11 +104,11 @@ void renderTextureXY(SDL_Texture *tex, SDL_Renderer *ren, int x, int y)
     int x_offset = w / 2;
     int y_offset = h / 2;
     
-    int half_width = (BOARD_SIZE / BOARD_HW) / 2;
+    int half_width = (BOARD_SIZE / hw) / 2;
     int x_cent, y_cent;
     
-    x_cent = ( (BOARD_SIZE * x) / BOARD_HW ) + BOARD_X - half_width - x_offset;
-    y_cent = ( (BOARD_SIZE * y) / BOARD_HW ) + BOARD_Y - half_width - y_offset;
+    x_cent = ( (BOARD_SIZE * x) / hw ) + BOARD_X - half_width - x_offset;
+    y_cent = ( (BOARD_SIZE * y) / hw ) + BOARD_Y - half_width - y_offset;
 
     renderTexture(tex, ren, x_cent, y_cent, w, h);
 }
@@ -185,10 +187,10 @@ int main(int argc, char **argv){
 
     renderTexture(background.get(), renderer.get(), 0, 0 );
     renderTexture(board.get(), renderer.get(), BOARD_X, BOARD_Y );
-    renderTextureXY(ex.get(),    renderer.get(), 1, 1 );
-    renderTextureXY(ex.get(),    renderer.get(), 1, 2 );
-    renderTextureXY(oh.get(),    renderer.get(), 2, 2 );
-    renderTextureXY(oh.get(),    renderer.get(), 3, 3 );
+    renderTextureXY(ex.get(),    renderer.get(), tictac.getBoardHW(), 1, 1 );
+    renderTextureXY(ex.get(),    renderer.get(), tictac.getBoardHW(), 1, 2 );
+    renderTextureXY(oh.get(),    renderer.get(), tictac.getBoardHW(), 0, 2 );
+    renderTextureXY(oh.get(),    renderer.get(), tictac.getBoardHW(), 0, 3 );
 
 
     SDL_RenderPresent(renderer.get());

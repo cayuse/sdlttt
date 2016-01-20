@@ -12,6 +12,7 @@ public:
     virtual std::string getBoardBG() = 0;
     virtual std::string getExPiece() = 0;
     virtual std::string getOhPiece() = 0;
+    virtual int getBoardHW() = 0;
     virtual bool move(int horiz, int vert) = 0;
     virtual Marker getCurrentPlayer() = 0;
     virtual bool checkForWins(Marker &player) = 0;
@@ -19,6 +20,7 @@ public:
     virtual void resetBoard() = 0;
     virtual void getScores(int &xWins, int &oWins) = 0;
     virtual Marker getMarkerAt(int horiz, int vert) = 0;
+
 };
 
 

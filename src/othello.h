@@ -3,9 +3,6 @@
 
 #include "bondiGameInterface.h"
 
-
-const int BOARD_HW =  8;
-
 // Class Definition for Tic Tac Toe
 class Othello: public bondiGameInterface
 {
@@ -18,8 +15,9 @@ private:
     Marker board [BOARD_HW][BOARD_HW] = { {MT} }; // init board as empty.
     Marker current_player = EX; // init as "its X's move"
     
-    int exWins = 0; // init no wins for X
-    int ohWins = 0; // init no wins for O
+    int exWins  = 0; // init no wins for X
+    int ohWins  = 0; // init no wins for O
+    int boardHW = 8; // board height and width
     std::string boardBG = "connectboard.png";
     std::string exPiece = "connectex.png";
     std::string ohPiece = "connectoh.png";
@@ -28,6 +26,7 @@ public:
     std::string getBoardBG();
     std::string getExPiece();
     std::string getOhPiece();
+    int getBoardHW();
     bool move(int horiz, int vert);
     Marker getCurrentPlayer();
     bool checkForWins(Marker &player);

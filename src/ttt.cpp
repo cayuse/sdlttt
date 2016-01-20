@@ -14,6 +14,11 @@ std::string Ttt::getOhPiece()
   return ohPiece;
 }
 
+int Ttt::getBoardHW()
+{
+  return boardHW;
+}
+
 /*  bool move(int horiz, int vert)
  *  This method is used to place a move on the board.
  *  The move is given as a pair of ints, and references the board as such.
