@@ -35,7 +35,6 @@ void renderTexture(SDL_Texture *tex, SDL_Renderer *ren, int x, int y, int w, int
 void renderTexture(SDL_Texture *tex, SDL_Renderer *ren, int x, int y);
 void renderTextureXY(SDL_Texture *tex, SDL_Renderer *ren, int hw, int x, int y);
 
-#### Main ####
 
 int main(int argc, char **argv){
 //############# SDL INIT SEQUENCE #################  
