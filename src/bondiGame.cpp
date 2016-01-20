@@ -18,8 +18,21 @@
 
 // an alias for an otherwise cumbersome template type:
 // a unique_ptr with simple function pointer as deleter
-template<typename T>
-using cleanup_unique_ptr = std::unique_ptr<T, void (*)(T *)>;
+cleanup_unique_ptr<SDL_Texture>
+loadTexture(const std::string &file, SDL_Renderer *ren);
+// function declarations
+void logSDLError(std::ostream &os, const std::string &msg);
+void renderTexture(SDL_Texture *tex, SDL_Renderer *ren, int x, int y, int w, int h);
+void renderTexture(SDL_Texture *tex, SDL_Renderer *ren, int x, int y);
+void renderTextureXY(SDL_Texture *tex, SDL_Renderer *ren, int hw, int x, int y);
+
+struct Game{
+    bondiGameInterface game;
+    SDL_Texture board;
+    SDL_Texture ex;
+    SDL_Texture oh;
+}
+
 
 const int SCREEN_WIDTH  = 800;
 const int SCREEN_HEIGHT = 600;
@@ -28,12 +41,8 @@ const int BOARD_SIZE = 500;
 const int BOARD_X = 270;
 const int BOARD_Y = 70;
 
-void logSDLError(std::ostream &os, const std::string &msg);
-cleanup_unique_ptr<SDL_Texture>
-loadTexture(const std::string &file, SDL_Renderer *ren);
-void renderTexture(SDL_Texture *tex, SDL_Renderer *ren, int x, int y, int w, int h);
-void renderTexture(SDL_Texture *tex, SDL_Renderer *ren, int x, int y);
-void renderTextureXY(SDL_Texture *tex, SDL_Renderer *ren, int hw, int x, int y);
+
+
 
 
 int main(int argc, char **argv){
@@ -84,14 +93,159 @@ int main(int argc, char **argv){
         return 1;
     }
 //############# END SDL INIT SEQUENCE #################
-
-    // create instance of ttt
-    Ttt tictac;
-    // create instance of othello
-    Othello othello;
-    // create instance of connect-4
-    Connect connect;
+    // LOAD ALL THE Objects and Images
+    const std::string backgroundPath = getResourcePath("backgrounds");
+    const std::string boardPath = getResourcePath("boards");
+    const std::string piecesPath = getResourcePath("pieces");
     
+    // background
+    auto background = loadTexture(backgroundPath + "background.png", renderer.get());
+    // menuScreen
+    auto menuScreen = loadTexture(backgroundPath + "menu.png", renderer.get());
+    // board
+    const std::string boardPath = getResourcePath("boards");
+    auto board = loadTexture(boardPath + tictac.getBoardBG(), renderer.get());
+    // pieces
+    const std::string piecesPath = getResourcePath("pieces");
+    auto ex = loadTexture(piecesPath + tictac.getExPiece(), renderer.get());
+    auto oh = loadTexture(piecesPath + tictac.getOhPiece(), renderer.get());
+    
+    //Make sure they all loaded ok
+    if (background == nullptr || menuScreen == nullptr)
+    {
+        return 1;
+    }
+    
+    // THERE HAS TO BE A BETTER WAY TO DO THIS!
+    // create instance of ttt
+    Ttt ttt;
+    Game tictac;
+    tictac.game = ttt;
+    tictac.board = loadTexture(boardPath  + ttt.getBoardBG(), renderer.get());
+    tictac.ex    = loadTexture(piecesPath + ttt.getExPiece(), renderer.get());
+    tictac.oh    = loadTexture(piecesPath + ttt.getOhPiece(), renderer.get());
+    //Make sure they all loaded ok
+    if (tictac.board == nullptr || tictac.ex == nullptr || tictac.oh == nullptr)
+    {
+        return 1;
+    }
+    
+    // create instance of othello
+    Othello oth;
+    Game othello;
+    othello.game = oth;
+    othello.board = loadTexture(boardPath  + oth.getBoardBG(), renderer.get());
+    othello.ex    = loadTexture(piecesPath + oth.getExPiece(), renderer.get());
+    othello.oh    = loadTexture(piecesPath + oth.getOhPiece(), renderer.get());
+    if (othello.board == nullptr || othello.ex == nullptr || othello.oh == nullptr)
+    {
+        return 1;
+    }
+    
+    // create instance of connect-4
+    Connect con;
+    Game connect;
+    connect.game = con;
+    connect.board = loadTexture(boardPath  + con.getBoardBG(), renderer.get());
+    connect.ex    = loadTexture(piecesPath + con.getExPiece(), renderer.get());
+    connect.oh    = loadTexture(piecesPath + con.getOhPiece(), renderer.get());
+    if (connect.board == nullptr || connect.ex == nullptr || connect.oh == nullptr)
+    {
+        return 1;
+    }    
+    
+    
+    bool menu = true;
+    bool quit = false;
+    while (!quit)
+    {
+        while( SDL_PollEvent( &event ) )
+        {
+            switch( event.type )
+            {
+                /* Look for a keypress */
+            case SDL_KEYDOWN:
+                /* Check the SDLKey values and move change the coords */
+                switch( event.key.keysym.sym )
+                {
+                case SDLK_LEFT:
+                    alien_xvel = -1;
+                    break;
+                case SDLK_RIGHT:
+                    alien_xvel =  1;
+                    break;
+                case SDLK_UP:
+                    alien_yvel = -1;
+                    break;
+                case SDLK_DOWN:
+                    alien_yvel =  1;
+                    break;
+                default:
+                    break;
+                }
+                break;
+                /* We must also use the SDL_KEYUP events to zero the x */
+                /* and y velocity variables. But we must also be       */
+                /* careful not to zero the velocities when we shouldn't*/
+            case SDL_KEYUP:
+                switch( event.key.keysym.sym )
+                {
+                case SDLK_LEFT:
+                    /* We check to make sure the alien is moving */
+                    /* to the left. If it is then we zero the    */
+                    /* velocity. If the alien is moving to the   */
+                    /* right then the right key is still press   */
+                    /* so we don't tocuh the velocity            */
+                    if( alien_xvel < 0 )
+                        alien_xvel = 0;
+                    break;
+                case SDLK_RIGHT:
+                    if( alien_xvel > 0 )
+                        alien_xvel = 0;
+                    break;
+                case SDLK_UP:
+                    if( alien_yvel < 0 )
+                        alien_yvel = 0;
+                    break;
+                case SDLK_DOWN:
+                    if( alien_yvel > 0 )
+                        alien_yvel = 0;
+                    break;
+                default:
+                    break;
+                }
+                break;
+            case SDL_MOUSEBUTTONDOWN:
+                quit = true;
+                break;
+            default:
+                break;
+            }
+
+
+        }
+        if (alien_xvel > 0)
+        {
+          ship.rotateCW();
+        }
+        if (alien_xvel < 0)
+        {
+          ship.rotateCCW();
+        }
+        
+        if (alien_yvel < 0)
+        {
+          ship.thrust();
+        }
+        ship.getPosition(delta.get_ticks(), alien_x, alien_y, alien_angle);
+        SDL_RenderClear(renderer);
+        renderTextureEx(image, renderer, alien_x, alien_y, 64, 64, alien_angle);
+        delta.start();
+        SDL_RenderPresent(renderer);
+    }
+    /* Update the alien position */
+
+/*  LEGACY CODE TO DIG THROUGH AS NEEDED
     // LOAD ALL THE Images
     // background
     const std::string backgroundPath = getResourcePath("backgrounds");
@@ -123,7 +277,7 @@ int main(int argc, char **argv){
 
     SDL_RenderPresent(renderer.get());
     SDL_Delay(5000);
-
+*/
     return 0;
 }
 
