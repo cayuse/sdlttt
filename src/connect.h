@@ -11,10 +11,11 @@ private:
      * games.. All games that start with this mess should be square
      * this may change if i get ambitious
     */
+
+    static constexpr int boardHW = 8; // height/width of board
     
     int exWins  = 0; // init no wins for X
     int ohWins  = 0; // init no wins for O
-    int boardHW = 8; // height/width of board
     std::string boardBG = "tttboard.png";
     std::string exPiece = "tttex.png";
     std::string ohPiece = "tttoh.png";

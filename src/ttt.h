@@ -12,10 +12,11 @@ private:
     /* board height/width. Doing it this way in case we make different
      * games.. All games that start with this mess should be square
     */
+
+    static constexpr int boardHW = 3; // height/width of board
     
     int exWins  = 0; // init no wins for X
     int ohWins  = 0; // init no wins for O
-    int boardHW = 3; // height/width of board
     std::string boardBG = "tttboard.png";
     std::string exPiece = "tttex.png";
     std::string ohPiece = "tttoh.png";
