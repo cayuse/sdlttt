@@ -28,6 +28,107 @@ const int BOARD_SIZE = 500;
 const int BOARD_X = 270;
 const int BOARD_Y = 70;
 
+void logSDLError(std::ostream &os, const std::string &msg);
+cleanup_unique_ptr<SDL_Texture>
+loadTexture(const std::string &file, SDL_Renderer *ren);
+void renderTexture(SDL_Texture *tex, SDL_Renderer *ren, int x, int y, int w, int h);
+void renderTexture(SDL_Texture *tex, SDL_Renderer *ren, int x, int y);
+void renderTextureXY(SDL_Texture *tex, SDL_Renderer *ren, int hw, int x, int y);
+
+#### Main ####
+
+int main(int argc, char **argv){
+//############# SDL INIT SEQUENCE #################  
+    // Main SDL Init
+    if (SDL_Init(SDL_INIT_EVERYTHING) != 0)
+    {
+        logSDLError(std::cout, "SDL_Init");
+        return 1;
+    }
+    
+    atexit(SDL_Quit);
+
+    // Init SDL Image specifically for png files
+    if ((IMG_Init(IMG_INIT_PNG) & IMG_INIT_PNG) != IMG_INIT_PNG)
+    {
+        logSDLError(std::cout, "IMG_Init");
+        return 1;
+    }
+    
+    atexit(IMG_Quit);
+    
+    // not exactly sure how this works, its wrappng the window intit into some sort of templeted
+    // pointer cleanup goodness
+    cleanup_unique_ptr<SDL_Window> window(
+        SDL_CreateWindow(
+            "Tic Tac Toe",
+            50, 50,
+            SCREEN_WIDTH, SCREEN_HEIGHT,
+            SDL_WINDOW_SHOWN),
+        SDL_DestroyWindow);
+    if (window == nullptr)
+    {
+        logSDLError(std::cout, "CreateWindow");
+        return 1;
+    }
+    
+    // same as above, but wrapping the creation of a renderer into a pointer cleaner upper???
+    cleanup_unique_ptr<SDL_Renderer> renderer(
+        SDL_CreateRenderer(
+            window.get(),
+            -1,
+            SDL_RENDERER_ACCELERATED | SDL_RENDERER_PRESENTVSYNC),
+        SDL_DestroyRenderer);
+    if (renderer == nullptr)
+    {
+        logSDLError(std::cout, "CreateRenderer");
+        return 1;
+    }
+//############# END SDL INIT SEQUENCE #################
+
+    // create instance of ttt
+    Ttt tictac;
+    // create instance of othello
+    Othello othello;
+    // create instance of connect-4
+    Connect connect;
+    
+    // LOAD ALL THE Images
+    // background
+    const std::string backgroundPath = getResourcePath("backgrounds");
+    auto background = loadTexture(backgroundPath + "background.png", renderer.get());
+    // board
+    const std::string boardPath = getResourcePath("boards");
+    auto board = loadTexture(boardPath + tictac.getBoardBG(), renderer.get());
+    // pieces
+    const std::string piecesPath = getResourcePath("pieces");
+    auto ex = loadTexture(piecesPath + tictac.getExPiece(), renderer.get());
+    auto oh = loadTexture(piecesPath + tictac.getOhPiece(), renderer.get());
+    
+    //Make sure they all loaded ok
+    if (background == nullptr || board == nullptr || ex == nullptr || oh == nullptr)
+    {
+        return 1;
+    }
+
+    //initial display stuff.. this needs to be put into a function eventually... all this does.. or better yet a class
+    SDL_RenderClear(renderer.get());
+
+    renderTexture(background.get(), renderer.get(), 0, 0 );
+    renderTexture(board.get(), renderer.get(), BOARD_X, BOARD_Y );
+    renderTextureXY(ex.get(),    renderer.get(), tictac.getBoardHW(), 1, 1 );
+    renderTextureXY(ex.get(),    renderer.get(), tictac.getBoardHW(), 1, 2 );
+    renderTextureXY(oh.get(),    renderer.get(), tictac.getBoardHW(), 0, 2 );
+    renderTextureXY(oh.get(),    renderer.get(), tictac.getBoardHW(), 0, 3 );
+
+
+    SDL_RenderPresent(renderer.get());
+    SDL_Delay(5000);
+
+    return 0;
+}
+
+
 /**
 * Log an SDL error with some error message to the output stream of our choice
 * @param os The output stream to write the message to
@@ -111,90 +212,4 @@ void renderTextureXY(SDL_Texture *tex, SDL_Renderer *ren, int hw, int x, int y)
     y_cent = ( (BOARD_SIZE * y) / hw ) + BOARD_Y - half_width - y_offset;
 
     renderTexture(tex, ren, x_cent, y_cent, w, h);
-}
-
-int main(int argc, char **argv){
-    
-    // Main SDL Init
-    if (SDL_Init(SDL_INIT_EVERYTHING) != 0)
-    {
-        logSDLError(std::cout, "SDL_Init");
-        return 1;
-    }
-    
-    atexit(SDL_Quit);
-
-    // Init SDL Image specifically for png files
-    if ((IMG_Init(IMG_INIT_PNG) & IMG_INIT_PNG) != IMG_INIT_PNG)
-    {
-        logSDLError(std::cout, "IMG_Init");
-        return 1;
-    }
-    
-    atexit(IMG_Quit);
-    
-    // not exactly sure how this works, its wrappng the window intit into some sort of templeted
-    // pointer cleanup goodness
-    cleanup_unique_ptr<SDL_Window> window(
-        SDL_CreateWindow(
-            "Tic Tac Toe",
-            50, 50,
-            SCREEN_WIDTH, SCREEN_HEIGHT,
-            SDL_WINDOW_SHOWN),
-        SDL_DestroyWindow);
-    if (window == nullptr)
-    {
-        logSDLError(std::cout, "CreateWindow");
-        return 1;
-    }
-    
-    // same as above, but wrapping the creation of a renderer into a pointer cleaner upper???
-    cleanup_unique_ptr<SDL_Renderer> renderer(
-        SDL_CreateRenderer(
-            window.get(),
-            -1,
-            SDL_RENDERER_ACCELERATED | SDL_RENDERER_PRESENTVSYNC),
-        SDL_DestroyRenderer);
-    if (renderer == nullptr)
-    {
-        logSDLError(std::cout, "CreateRenderer");
-        return 1;
-    }
-
-    // create instance of ttt
-    Ttt tictac;
-    
-    // LOAD ALL THE Images
-    // background
-    const std::string backgroundPath = getResourcePath("backgrounds");
-    auto background = loadTexture(backgroundPath + "background.png", renderer.get());
-    // board
-    const std::string boardPath = getResourcePath("boards");
-    auto board = loadTexture(boardPath + tictac.getBoardBG(), renderer.get());
-    // pieces
-    const std::string piecesPath = getResourcePath("pieces");
-    auto ex = loadTexture(piecesPath + tictac.getExPiece(), renderer.get());
-    auto oh = loadTexture(piecesPath + tictac.getOhPiece(), renderer.get());
-    
-    //Make sure they all loaded ok
-    if (background == nullptr || board == nullptr || ex == nullptr || oh == nullptr)
-    {
-        return 1;
-    }
-
-    //initial display stuff.. this needs to be put into a function eventually... all this does.. or better yet a class
-    SDL_RenderClear(renderer.get());
-
-    renderTexture(background.get(), renderer.get(), 0, 0 );
-    renderTexture(board.get(), renderer.get(), BOARD_X, BOARD_Y );
-    renderTextureXY(ex.get(),    renderer.get(), tictac.getBoardHW(), 1, 1 );
-    renderTextureXY(ex.get(),    renderer.get(), tictac.getBoardHW(), 1, 2 );
-    renderTextureXY(oh.get(),    renderer.get(), tictac.getBoardHW(), 0, 2 );
-    renderTextureXY(oh.get(),    renderer.get(), tictac.getBoardHW(), 0, 3 );
-
-
-    SDL_RenderPresent(renderer.get());
-    SDL_Delay(5000);
-
-    return 1;
 }
