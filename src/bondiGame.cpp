@@ -161,7 +161,7 @@ int main(int argc, char **argv) {
   bool quit = false;
   while (!quit) {
     while (SDL_PollEvent(&event)) {
-      if (menu == true) { // if the menu is on, do these things
+      if (menu) { // if the menu is on, do these things
         switch (event.type) {
           /* Look for a keypress */
           case SDL_KEYDOWN:
@@ -207,7 +207,7 @@ int main(int argc, char **argv) {
       }
     }
     SDL_RenderClear(renderer.get());
-    if (menu == true) {
+    if (menu) {
       renderTexture(menuScreen.get(), renderer.get(), 0, 0);
     } else {
       renderTexture(background.get(), renderer.get(), 0, 0);
