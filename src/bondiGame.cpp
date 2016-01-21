@@ -18,6 +18,8 @@
 #include <memory>
 #include <string>
 
+template<typename T>
+using cleanup_unique_ptr = std::unique_ptr<T, void (*)(T *)>;
 // an alias for an otherwise cumbersome template type:
 // a unique_ptr with simple function pointer as deleter
 cleanup_unique_ptr <SDL_Texture>
@@ -33,10 +35,10 @@ void renderTexture(SDL_Texture *tex, SDL_Renderer *ren, int x, int y);
 void renderTextureXY(SDL_Texture *tex, SDL_Renderer *ren, int hw, int x, int y);
 
 struct Game {
-  bondiGameInterface game;
-  SDL_Texture *board;
-  SDL_Texture *ex;
-  SDL_Texture *oh;
+  bondiGameInterface *game;
+  SDL_Texture board;
+  SDL_Texture ex;
+  SDL_Texture oh;
 };
 
 
@@ -102,13 +104,10 @@ int main(int argc, char **argv) {
   auto background = loadTexture(backgroundPath + "background.png", renderer.get());
   // menuScreen
   auto menuScreen = loadTexture(backgroundPath + "menu.png", renderer.get());
-  // board
+  // board path
   const std::string boardPath = getResourcePath("boards");
-  auto board = loadTexture(boardPath + tictac.getBoardBG(), renderer.get());
-  // pieces
+  // pieces path
   const std::string piecesPath = getResourcePath("pieces");
-  auto ex = loadTexture(piecesPath + tictac.getExPiece(), renderer.get());
-  auto oh = loadTexture(piecesPath + tictac.getOhPiece(), renderer.get());
 
   //Make sure they all loaded ok
   if (background == nullptr || menuScreen == nullptr) {
@@ -119,7 +118,7 @@ int main(int argc, char **argv) {
   // create instance of ttt
   Ttt ttt;
   Game tictac;
-  tictac.game = ttt;
+  tictac.game = &ttt;
   tictac.board = loadTexture(boardPath + ttt.getBoardBG(), renderer.get());
   tictac.ex = loadTexture(piecesPath + ttt.getExPiece(), renderer.get());
   tictac.oh = loadTexture(piecesPath + ttt.getOhPiece(), renderer.get());
@@ -131,7 +130,7 @@ int main(int argc, char **argv) {
   // create instance of othello
   Othello oth;
   Game othello;
-  othello.game = oth;
+  othello.game = &oth;
   othello.board = loadTexture(boardPath + oth.getBoardBG(), renderer.get());
   othello.ex = loadTexture(piecesPath + oth.getExPiece(), renderer.get());
   othello.oh = loadTexture(piecesPath + oth.getOhPiece(), renderer.get());
@@ -142,7 +141,7 @@ int main(int argc, char **argv) {
   // create instance of connect-4
   Connect con;
   Game connect;
-  connect.game = con;
+  connect.game = &con;
   connect.board = loadTexture(boardPath + con.getBoardBG(), renderer.get());
   connect.ex = loadTexture(piecesPath + con.getExPiece(), renderer.get());
   connect.oh = loadTexture(piecesPath + con.getOhPiece(), renderer.get());
