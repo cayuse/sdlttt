@@ -36,9 +36,9 @@ void renderTextureXY(SDL_Texture *tex, SDL_Renderer *ren, int hw, int x, int y);
 
 struct Game {
   bondiGameInterface *game;
-  SDL_Texture *board;
-  SDL_Texture *ex;
-  SDL_Texture *oh;
+  cleanup_unique_ptr <SDL_Texture> board;
+  cleanup_unique_ptr <SDL_Texture> ex;
+  cleanup_unique_ptr <SDL_Texture> oh;
 };
 
 
@@ -116,12 +116,9 @@ int main(int argc, char **argv) {
   Ttt ttt;
   Game tictac;
   tictac.game = &ttt;
-  auto tttBoard = loadTexture(boardPath + ttt.getBoardBG(), renderer.get());
-  tictac.board = &tttBoard;
-  auto tttEX = loadTexture(piecesPath + ttt.getExPiece(), renderer.get());
-  tictac.ex = &tttEX;
-  auto tttOH = loadTexture(piecesPath + ttt.getOhPiece(), renderer.get());
-  tictac.oh = &tttOH;
+  tictac.board = loadTexture(boardPath + ttt.getBoardBG(), renderer.get());
+  tictac.ex = loadTexture(piecesPath + ttt.getExPiece(), renderer.get());
+  tictac.oh = loadTexture(piecesPath + ttt.getOhPiece(), renderer.get());
   //Make sure they all loaded ok
   if (tictac.board == nullptr || tictac.ex == nullptr || tictac.oh == nullptr) {
     return 1;
@@ -131,12 +128,9 @@ int main(int argc, char **argv) {
   Othello oth;
   Game othello;
   othello.game = &oth;
-  auto othBoard = loadTexture(boardPath + oth.getBoardBG(), renderer.get());
-  othello.board = &othBoard;
-  auto othEX = loadTexture(piecesPath + oth.getExPiece(), renderer.get());
-  othello.ex = &othEX;
-  auto othOH = loadTexture(piecesPath + oth.getOhPiece(), renderer.get());
-  othello.oh = &othOH;
+  othello.board = loadTexture(boardPath + oth.getBoardBG(), renderer.get());
+  othello.ex = loadTexture(piecesPath + oth.getExPiece(), renderer.get());
+  othello.oh = loadTexture(piecesPath + oth.getOhPiece(), renderer.get());
   if (othello.board == nullptr || othello.ex == nullptr || othello.oh == nullptr) {
     return 1;
   }
@@ -145,17 +139,15 @@ int main(int argc, char **argv) {
   Connect con;
   Game connect;
   connect.game = &con;
-  auto conBoard = loadTexture(boardPath + con.getBoardBG(), renderer.get());
-  connect.board = &conBoard;
-  auto conEX = loadTexture(piecesPath + con.getExPiece(), renderer.get());
-  connect.ex = &conEX;
-  auto conOH = loadTexture(piecesPath + con.getOhPiece(), renderer.get());
-  connect.oh = &conOH;
+  connect.board = loadTexture(boardPath + con.getBoardBG(), renderer.get());
+  connect.ex = loadTexture(piecesPath + con.getExPiece(), renderer.get());
+  connect.oh = loadTexture(piecesPath + con.getOhPiece(), renderer.get());
   if (connect.board == nullptr || connect.ex == nullptr || connect.oh == nullptr) {
     return 1;
   }
 
   Game *currentGame;
+  SDL_Event event;
 
   bool menu = true; // start with the menu system
   bool quit = false;
@@ -212,10 +204,10 @@ int main(int argc, char **argv) {
     } else {
       renderTexture(background.get(), renderer.get(), 0, 0 );
       renderTexture(current->board.get(), renderer.get(), BOARD_X, BOARD_Y );
-      renderTextureXY(current->ex.get(),    renderer.get(), current->game.getBoardHW(), 1, 1 );
-      renderTextureXY(current->ex.get(),    renderer.get(), current->game.getBoardHW(), 1, 2 );
-      renderTextureXY(current->oh.get(),    renderer.get(), current->game.getBoardHW(), 0, 2 );
-      renderTextureXY(current->oh.get(),    renderer.get(), current->game.getBoardHW(), 0, 3 );
+      renderTextureXY(currentGame->ex.get(),    renderer.get(), currentGame->game.getBoardHW(), 1, 1 );
+      renderTextureXY(currentGame->ex.get(),    renderer.get(), currentGame->game.getBoardHW(), 1, 2 );
+      renderTextureXY(currentGame->oh.get(),    renderer.get(), currentGame->game.getBoardHW(), 0, 2 );
+      renderTextureXY(currentGame->oh.get(),    renderer.get(), currentGame->game.getBoardHW(), 0, 3 );
     }
   }
   /* Update the alien position */
