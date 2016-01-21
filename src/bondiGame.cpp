@@ -36,9 +36,9 @@ void renderTextureXY(SDL_Texture *tex, SDL_Renderer *ren, int hw, int x, int y);
 
 struct Game {
   bondiGameInterface *game;
-  SDL_Texture board;
-  SDL_Texture ex;
-  SDL_Texture oh;
+  SDL_Texture *board;
+  SDL_Texture *ex;
+  SDL_Texture *oh;
 };
 
 
@@ -104,10 +104,7 @@ int main(int argc, char **argv) {
   auto background = loadTexture(backgroundPath + "background.png", renderer.get());
   // menuScreen
   auto menuScreen = loadTexture(backgroundPath + "menu.png", renderer.get());
-  // board path
-  const std::string boardPath = getResourcePath("boards");
-  // pieces path
-  const std::string piecesPath = getResourcePath("pieces");
+
 
   //Make sure they all loaded ok
   if (background == nullptr || menuScreen == nullptr) {
@@ -119,9 +116,12 @@ int main(int argc, char **argv) {
   Ttt ttt;
   Game tictac;
   tictac.game = &ttt;
-  tictac.board = loadTexture(boardPath + ttt.getBoardBG(), renderer.get());
-  tictac.ex = loadTexture(piecesPath + ttt.getExPiece(), renderer.get());
-  tictac.oh = loadTexture(piecesPath + ttt.getOhPiece(), renderer.get());
+  auto tttBoard = loadTexture(boardPath + ttt.getBoardBG(), renderer.get());
+  tictac.board = &tttBoard;
+  auto tttEX = loadTexture(piecesPath + ttt.getExPiece(), renderer.get());
+  tictac.ex = &tttEX;
+  auto tttOH = loadTexture(piecesPath + ttt.getOhPiece(), renderer.get());
+  tictac.oh = &tttOH;
   //Make sure they all loaded ok
   if (tictac.board == nullptr || tictac.ex == nullptr || tictac.oh == nullptr) {
     return 1;
@@ -131,9 +131,12 @@ int main(int argc, char **argv) {
   Othello oth;
   Game othello;
   othello.game = &oth;
-  othello.board = loadTexture(boardPath + oth.getBoardBG(), renderer.get());
-  othello.ex = loadTexture(piecesPath + oth.getExPiece(), renderer.get());
-  othello.oh = loadTexture(piecesPath + oth.getOhPiece(), renderer.get());
+  auto othBoard = loadTexture(boardPath + oth.getBoardBG(), renderer.get());
+  othello.board = &othBoard;
+  auto othEX = loadTexture(piecesPath + oth.getExPiece(), renderer.get());
+  othello.ex = &othEX;
+  auto othOH = loadTexture(piecesPath + oth.getOhPiece(), renderer.get());
+  othello.oh = &othOH;
   if (othello.board == nullptr || othello.ex == nullptr || othello.oh == nullptr) {
     return 1;
   }
@@ -142,9 +145,12 @@ int main(int argc, char **argv) {
   Connect con;
   Game connect;
   connect.game = &con;
-  connect.board = loadTexture(boardPath + con.getBoardBG(), renderer.get());
-  connect.ex = loadTexture(piecesPath + con.getExPiece(), renderer.get());
-  connect.oh = loadTexture(piecesPath + con.getOhPiece(), renderer.get());
+  auto conBoard = loadTexture(boardPath + con.getBoardBG(), renderer.get());
+  connect.board = &conBoard;
+  auto conEX = loadTexture(piecesPath + con.getExPiece(), renderer.get());
+  connect.ex = &conEX;
+  auto conOH = loadTexture(piecesPath + con.getOhPiece(), renderer.get());
+  connect.oh = &conOH;
   if (connect.board == nullptr || connect.ex == nullptr || connect.oh == nullptr) {
     return 1;
   }
