@@ -35,6 +35,8 @@ void renderTexture(SDL_Texture *tex, SDL_Renderer *ren, int x, int y);
 
 void renderTextureXY(SDL_Texture *tex, SDL_Renderer *ren, int hw, int x, int y);
 
+bool getClickedCell(int hw, int mousex, int mousey, int &clickedx, int &clickedy);
+
 struct Game {
   bondiGameInterface *game;
   cleanup_unique_ptr<SDL_Texture> board;
@@ -156,6 +158,10 @@ int main(int argc, char **argv) {
 
   Game *currentGame;
   SDL_Event event;
+  int mouse_x = 0;
+  int mouse_y = 0;
+  int clicked_x = 0;
+  int clicked_y = 0;
 
   bool menu = true; // start with the menu system
   bool quit = false;
@@ -176,11 +182,11 @@ int main(int argc, char **argv) {
                 break;
               case SDLK_2:
                 menu = false;
-                currentGame = &tictac;
+                currentGame = &othello;
                 break;
               case SDLK_3:
                 menu = false;
-                currentGame = &tictac;
+                currentGame = &connect;
                 break;
               default:
                 break;
@@ -199,7 +205,12 @@ int main(int argc, char **argv) {
             }
             break;
           case SDL_MOUSEBUTTONDOWN:
-            quit = true;
+            mouse_x = event.button.x;
+            mouse_y = event.button.y;
+            if ( getClickedCell(currentGame->game->getBoardHW(), mouse_x, mouse_y, clicked_x, clicked_y) )
+            {
+              currentGame->game->move(clicked_x, clicked_y);
+            }
             break;
           default:
             break;
@@ -212,47 +223,15 @@ int main(int argc, char **argv) {
     } else {
       renderTexture(background.get(), renderer.get(), 0, 0);
       renderTexture(currentGame->board.get(), renderer.get(), BOARD_X, BOARD_Y);
+      renderTextureXY(currentGame->ex.get(), renderer.get(), currentGame->game->getBoardHW(), 0, 0);
       renderTextureXY(currentGame->ex.get(), renderer.get(), currentGame->game->getBoardHW(), 1, 1);
-      renderTextureXY(currentGame->ex.get(), renderer.get(), currentGame->game->getBoardHW(), 1, 2);
       renderTextureXY(currentGame->oh.get(), renderer.get(), currentGame->game->getBoardHW(), 0, 2);
-      renderTextureXY(currentGame->oh.get(), renderer.get(), currentGame->game->getBoardHW(), 0, 3);
+      renderTextureXY(currentGame->oh.get(), renderer.get(), currentGame->game->getBoardHW(), 0, 2);
+      renderTextureXY(currentGame->oh.get(), renderer.get(), currentGame->game->getBoardHW(), 7, 7);
+      renderTextureXY(currentGame->oh.get(), renderer.get(), currentGame->game->getBoardHW(), 6, 6);
     }
-  }
-  /* Update the alien position */
-
-/*  LEGACY CODE TO DIG THROUGH AS NEEDED
-    // LOAD ALL THE Images
-    // background
-    const std::string backgroundPath = getResourcePath("backgrounds");
-    auto background = loadTexture(backgroundPath + "background.png", renderer.get());
-    // board
-    const std::string boardPath = getResourcePath("boards");
-    auto board = loadTexture(boardPath + tictac.getBoardBG(), renderer.get());
-    // pieces
-    const std::string piecesPath = getResourcePath("pieces");
-    auto ex = loadTexture(piecesPath + tictac.getExPiece(), renderer.get());
-    auto oh = loadTexture(piecesPath + tictac.getOhPiece(), renderer.get());
-    
-    //Make sure they all loaded ok
-    if (background == nullptr || board == nullptr || ex == nullptr || oh == nullptr)
-    {
-        return 1;
-    }
-
-    //initial display stuff.. this needs to be put into a function eventually... all this does.. or better yet a class
-    SDL_RenderClear(renderer.get());
-
-    renderTexture(background.get(), renderer.get(), 0, 0 );
-    renderTexture(board.get(), renderer.get(), BOARD_X, BOARD_Y );
-    renderTextureXY(ex.get(),    renderer.get(), tictac.getBoardHW(), 1, 1 );
-    renderTextureXY(ex.get(),    renderer.get(), tictac.getBoardHW(), 1, 2 );
-    renderTextureXY(oh.get(),    renderer.get(), tictac.getBoardHW(), 0, 2 );
-    renderTextureXY(oh.get(),    renderer.get(), tictac.getBoardHW(), 0, 3 );
-
-
     SDL_RenderPresent(renderer.get());
-    SDL_Delay(5000);
-*/
+  }
   return 0;
 }
 
@@ -338,4 +317,35 @@ void renderTextureXY(SDL_Texture *tex, SDL_Renderer *ren, int hw, int x, int y) 
   y_cent = ((BOARD_SIZE * y) / hw) + BOARD_Y - half_width - y_offset;
 
   renderTexture(tex, ren, x_cent, y_cent, w, h);
+}
+
+// returns false if it didn't get a valid square
+bool getClickedCell(int hw, int mousex, int mousey, int &clickedx, int &clickedy)
+{
+  int x = 0;
+  int y = 0;
+  clickedx = -1;
+  clickedy = -1;
+
+  for (double i = double(BOARD_X); i < double(BOARD_X + BOARD_SIZE + 1); i += double(double(BOARD_SIZE) / hw) ){
+    if ( mousex > i && mousex < double(BOARD_SIZE / hw) )
+    {
+      clickedx = x;
+    }else{
+      x++;
+    }
+  }
+  for (double i = double(BOARD_Y); i < double(BOARD_Y + BOARD_SIZE + 1); i += double(double(BOARD_SIZE) / hw) ){
+    if ( mousey > i && mousey < double(BOARD_SIZE / hw) )
+    {
+      clickedy = y;
+    }else{
+      y++;
+    }
+  }
+  if (clickedx >= 0 && clickedy >= 0){
+    return true;
+  } else {
+    return false;
+  }
 }
