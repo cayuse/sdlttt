@@ -20,9 +20,10 @@
 
 template<typename T>
 using cleanup_unique_ptr = std::unique_ptr<T, void (*)(T *)>;
+
 // an alias for an otherwise cumbersome template type:
 // a unique_ptr with simple function pointer as deleter
-cleanup_unique_ptr <SDL_Texture>
+cleanup_unique_ptr<SDL_Texture>
         loadTexture(const std::string &file, SDL_Renderer *ren);
 
 // function declarations
@@ -36,9 +37,18 @@ void renderTextureXY(SDL_Texture *tex, SDL_Renderer *ren, int hw, int x, int y);
 
 struct Game {
   bondiGameInterface *game;
-  cleanup_unique_ptr <SDL_Texture> board;
-  cleanup_unique_ptr <SDL_Texture> ex;
-  cleanup_unique_ptr <SDL_Texture> oh;
+  cleanup_unique_ptr<SDL_Texture> board;
+  cleanup_unique_ptr<SDL_Texture> ex;
+  cleanup_unique_ptr<SDL_Texture> oh;
+
+  Game(bondiGameInterface *game,
+       cleanup_unique_ptr<SDL_Texture> board,
+       cleanup_unique_ptr<SDL_Texture> ex,
+       cleanup_unique_ptr<SDL_Texture> oh)
+          : game(game),
+            board(std::move(board)),
+            ex(std::move(ex)),
+            oh(std::move(oh)) { }
 };
 
 
@@ -71,7 +81,7 @@ int main(int argc, char **argv) {
 
   // not exactly sure how this works, its wrappng the window intit into some sort of templeted
   // pointer cleanup goodness
-  cleanup_unique_ptr <SDL_Window> window(
+  cleanup_unique_ptr<SDL_Window> window(
           SDL_CreateWindow(
                   "Tic Tac Toe",
                   50, 50,
@@ -84,7 +94,7 @@ int main(int argc, char **argv) {
   }
 
   // same as above, but wrapping the creation of a renderer into a pointer cleaner upper???
-  cleanup_unique_ptr <SDL_Renderer> renderer(
+  cleanup_unique_ptr<SDL_Renderer> renderer(
           SDL_CreateRenderer(
                   window.get(),
                   -1,
@@ -114,34 +124,32 @@ int main(int argc, char **argv) {
   // THERE HAS TO BE A BETTER WAY TO DO THIS!
   // create instance of ttt
   Ttt ttt;
-  Game tictac;
-  tictac.game = &ttt;
-  tictac.board = loadTexture(boardPath + ttt.getBoardBG(), renderer.get());
-  tictac.ex = loadTexture(piecesPath + ttt.getExPiece(), renderer.get());
-  tictac.oh = loadTexture(piecesPath + ttt.getOhPiece(), renderer.get());
-  //Make sure they all loaded ok
+  Game tictac(&ttt,
+              loadTexture(boardPath + ttt.getBoardBG(), renderer.get()),
+              loadTexture(piecesPath + ttt.getExPiece(), renderer.get()),
+              loadTexture(piecesPath + ttt.getOhPiece(), renderer.get()));
   if (tictac.board == nullptr || tictac.ex == nullptr || tictac.oh == nullptr) {
     return 1;
   }
 
   // create instance of othello
   Othello oth;
-  Game othello;
-  othello.game = &oth;
-  othello.board = loadTexture(boardPath + oth.getBoardBG(), renderer.get());
-  othello.ex = loadTexture(piecesPath + oth.getExPiece(), renderer.get());
-  othello.oh = loadTexture(piecesPath + oth.getOhPiece(), renderer.get());
+  Game othello(&oth,
+               loadTexture(boardPath + oth.getBoardBG(), renderer.get()),
+               loadTexture(piecesPath + oth.getExPiece(), renderer.get()),
+               loadTexture(piecesPath + oth.getOhPiece(), renderer.get())
+  );
   if (othello.board == nullptr || othello.ex == nullptr || othello.oh == nullptr) {
     return 1;
   }
 
   // create instance of connect-4
   Connect con;
-  Game connect;
-  connect.game = &con;
-  connect.board = loadTexture(boardPath + con.getBoardBG(), renderer.get());
-  connect.ex = loadTexture(piecesPath + con.getExPiece(), renderer.get());
-  connect.oh = loadTexture(piecesPath + con.getOhPiece(), renderer.get());
+  Game connect(&con,
+               loadTexture(boardPath + con.getBoardBG(), renderer.get()),
+               loadTexture(piecesPath + con.getExPiece(), renderer.get()),
+               loadTexture(piecesPath + con.getOhPiece(), renderer.get())
+  );
   if (connect.board == nullptr || connect.ex == nullptr || connect.oh == nullptr) {
     return 1;
   }
@@ -199,15 +207,15 @@ int main(int argc, char **argv) {
       }
     }
     SDL_RenderClear(renderer.get());
-    if (menu == true){
-      renderTexture(menuScreen.get(), renderer.get(), 0, 0 );
+    if (menu == true) {
+      renderTexture(menuScreen.get(), renderer.get(), 0, 0);
     } else {
-      renderTexture(background.get(), renderer.get(), 0, 0 );
-      renderTexture(current->board.get(), renderer.get(), BOARD_X, BOARD_Y );
-      renderTextureXY(currentGame->ex.get(),    renderer.get(), currentGame->game.getBoardHW(), 1, 1 );
-      renderTextureXY(currentGame->ex.get(),    renderer.get(), currentGame->game.getBoardHW(), 1, 2 );
-      renderTextureXY(currentGame->oh.get(),    renderer.get(), currentGame->game.getBoardHW(), 0, 2 );
-      renderTextureXY(currentGame->oh.get(),    renderer.get(), currentGame->game.getBoardHW(), 0, 3 );
+      renderTexture(background.get(), renderer.get(), 0, 0);
+      renderTexture(currentGame->board.get(), renderer.get(), BOARD_X, BOARD_Y);
+      renderTextureXY(currentGame->ex.get(), renderer.get(), currentGame->game->getBoardHW(), 1, 1);
+      renderTextureXY(currentGame->ex.get(), renderer.get(), currentGame->game->getBoardHW(), 1, 2);
+      renderTextureXY(currentGame->oh.get(), renderer.get(), currentGame->game->getBoardHW(), 0, 2);
+      renderTextureXY(currentGame->oh.get(), renderer.get(), currentGame->game->getBoardHW(), 0, 3);
     }
   }
   /* Update the alien position */
@@ -264,7 +272,7 @@ void logSDLError(std::ostream &os, const std::string &msg) {
 * @param ren The renderer to load the texture onto
 * @return the loaded texture, or nullptr if something went wrong.
 */
-cleanup_unique_ptr <SDL_Texture>
+cleanup_unique_ptr<SDL_Texture>
 loadTexture(const std::string &file, SDL_Renderer *ren) {
   SDL_Texture *texture = IMG_LoadTexture(ren, file.c_str());
   if (texture == nullptr) {
