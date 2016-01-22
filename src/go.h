@@ -1,10 +1,10 @@
-#ifndef _OTHELLO_
-#define _OTHELLO_
+#ifndef _GO_
+#define _GO_
 
 #include "bondiGameInterface.h"
 
 // Class Definition for Tic Tac Toe
-class Othello: public bondiGameInterface
+class Go: public bondiGameInterface
 {
 private:
     /* board height/width. Doing it this way in case we make different
@@ -12,13 +12,13 @@ private:
      * this may change if i get ambitious
     */
 	
-    static constexpr int boardHW = 8; // height/width of board
+    static constexpr int boardHW = 19; // height/width of board
     
     int exWins  = 0; // init no wins for X
     int ohWins  = 0; // init no wins for O
-    std::string boardBG = "othelloboard.png";
-    std::string exPiece = "othelloex.png";
-    std::string ohPiece = "othellooh.png";
+    std::string boardBG = "goboard.png";
+    std::string exPiece = "goex.png";
+    std::string ohPiece = "gooh.png";
 
     Marker board [boardHW][boardHW] = { {MT} }; // init board as empty.
     Marker current_player = EX; // init as "its X's move"

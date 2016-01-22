@@ -1,20 +1,20 @@
-#include "othello.h"
+#include "go.h"
 
 // these functions just return the name of the file defined in the header so the game engine can load them up.
-std::string Othello::getBoardBG()
+std::string Go::getBoardBG()
 {
   return boardBG;
 }
-std::string Othello::getExPiece()
+std::string Go::getExPiece()
 {
   return exPiece;
 } 
-std::string Othello::getOhPiece()
+std::string Go::getOhPiece()
 {
   return ohPiece;
 }
 
-int Othello::getBoardHW()
+int Go::getBoardHW()
 {
   return boardHW;
 }
@@ -39,7 +39,7 @@ int Othello::getBoardHW()
  *  it puts the current player's "token" in that column  _AND_
  *  it changes the current_player variable (to the other player)
  */
-bool Othello::move(int horiz, int vert)
+bool Go::move(int horiz, int vert)
 {
   //stub return to supress whining
   return true;
@@ -50,7 +50,7 @@ bool Othello::move(int horiz, int vert)
  *  this method simply returns a Marker corresponding to whose turn it is:
  *  EX for X || OH for O
  */
-Marker Othello::getCurrentPlayer()
+Marker Go::getCurrentPlayer()
 {
   //stub return to supress whining
   return MT;
@@ -68,7 +68,7 @@ Marker Othello::getCurrentPlayer()
  *  (if) there has been a winner:
  *       player is set to EX for X winner and OH for O Winner
  */
-bool Othello::checkForWins(Marker &player)
+bool Go::checkForWins(Marker &player)
 {
   //stub return to supress whining
   return true;
@@ -88,7 +88,7 @@ bool Othello::checkForWins(Marker &player)
  * (if) this is not appropriate and the board should not be marked
  *      return false (e.g. othello)
 */
-bool Othello::getWinDimension(int &x1, int &y1, int &x2, int &y2)
+bool Go::getWinDimension(int &x1, int &y1, int &x2, int &y2)
 {
   //stub return to supress whining
   return true;
@@ -101,7 +101,7 @@ bool Othello::getWinDimension(int &x1, int &y1, int &x2, int &y2)
  *
  *  resets the gamestate to initial settings
  */
-void Othello::resetBoard()
+void Go::resetBoard()
 {
   
 }
@@ -111,7 +111,7 @@ void Othello::resetBoard()
  *  just stores the current tally of wins for the
  *  players into the int references
  */
-void Othello::getScores(int &xWins, int &oWins)
+void Go::getScores(int &xWins, int &oWins)
 {
   
 }
@@ -129,7 +129,7 @@ void Othello::getScores(int &xWins, int &oWins)
  *  [7][0] |   ...  | [7][7]
  *
  */
-Marker Othello::getMarkerAt(int horiz, int vert)
+Marker Go::getMarkerAt(int horiz, int vert)
 {
   //stub return to supress whining
   return EX;
