@@ -322,27 +322,23 @@ void renderTextureXY(SDL_Texture *tex, SDL_Renderer *ren, int hw, int x, int y) 
 // returns false if it didn't get a valid square
 bool getClickedCell(int hw, int mousex, int mousey, int &clickedx, int &clickedy)
 {
-  int x = 0;
-  int y = 0;
   clickedx = -1;
   clickedy = -1;
+  for (int i = 0; i < hw; i++) {
+    int cellLeft  = BOARD_X + (BOARD_SIZE * i) / hw;
+    int cellRight = BOARD_X + (BOARD_SIZE * (i + 1) ) / hw;
+    if (mousex > cellLeft && mousex < cellRight) {
+      clickedx = i;
+    }
+  }
+  for (int i = 0; i < hw; i++) {
+    int cellLeft  = BOARD_Y + (BOARD_SIZE * i) / hw;
+    int cellRight = BOARD_Y + (BOARD_SIZE * (i + 1) ) / hw;
+    if (mousey > cellLeft && mousey < cellRight) {
+      clickedy = i;
+    }
+  } 
 
-  for (double i = double(BOARD_X); i < double(BOARD_X + BOARD_SIZE + 1); i += double(double(BOARD_SIZE) / hw) ){
-    if ( mousex > i && mousex < double(BOARD_SIZE / hw) )
-    {
-      clickedx = x;
-    }else{
-      x++;
-    }
-  }
-  for (double i = double(BOARD_Y); i < double(BOARD_Y + BOARD_SIZE + 1); i += double(double(BOARD_SIZE) / hw) ){
-    if ( mousey > i && mousey < double(BOARD_SIZE / hw) )
-    {
-      clickedy = y;
-    }else{
-      y++;
-    }
-  }
   if (clickedx >= 0 && clickedy >= 0){
     return true;
   } else {
