@@ -3,6 +3,7 @@
 #include "ttt.h"
 #include "othello.h"
 #include "connect.h"
+#include "go.h"
 
 #ifdef USING_OSX_FRAMEWORKS
 #   include <SDL2/SDL.h>
@@ -156,11 +157,11 @@ int main(int argc, char **argv) {
     return 1;
   }
 
-  Go go;
-  Game connect(&co,
-               loadTexture(boardPath + go.getBoardBG(), renderer.get()),
-               loadTexture(piecesPath + go.getExPiece(), renderer.get()),
-               loadTexture(piecesPath + go.getOhPiece(), renderer.get())
+  Go go_g;
+  Game go(&go_g,
+               loadTexture(boardPath + go_g.getBoardBG(), renderer.get()),
+               loadTexture(piecesPath + go_g.getExPiece(), renderer.get()),
+               loadTexture(piecesPath + go_g.getOhPiece(), renderer.get())
   );
   if (go.board == nullptr || go.ex == nullptr || go.oh == nullptr) {
     return 1;

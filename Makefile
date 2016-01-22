@@ -31,7 +31,7 @@ LDFLAGS += $(SDL2_LDFLAGS)
 .PHONY: all
 all: $(MAIN)
 
-$(MAIN): $(OBJDIR)/bondiGame.cpp.o $(OBJDIR)/ttt.cpp.o $(OBJDIR)/othello.cpp.o $(OBJDIR)/connect.cpp.o
+$(MAIN): $(OBJDIR)/bondiGame.cpp.o $(OBJDIR)/ttt.cpp.o $(OBJDIR)/othello.cpp.o $(OBJDIR)/connect.cpp.o $(OBJDIR)/go.cpp.o
 	$(CXX) $(LDFLAGS) $^ -o $@
 
 $(OBJDIR)/%.cpp.o: $(SRCDIR)/%.cpp $(OBJDIR)
