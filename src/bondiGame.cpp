@@ -156,6 +156,15 @@ int main(int argc, char **argv) {
     return 1;
   }
 
+  Go go;
+  Game connect(&co,
+               loadTexture(boardPath + go.getBoardBG(), renderer.get()),
+               loadTexture(piecesPath + go.getExPiece(), renderer.get()),
+               loadTexture(piecesPath + go.getOhPiece(), renderer.get())
+  );
+  if (go.board == nullptr || go.ex == nullptr || go.oh == nullptr) {
+    return 1;
+  }
   Game *currentGame;
   SDL_Event event;
   int mouse_x = 0;
@@ -187,6 +196,10 @@ int main(int argc, char **argv) {
               case SDLK_3:
                 menu = false;
                 currentGame = &connect;
+                break;
+              case SDLK_4:
+                menu = false;
+                currentGame = &go;
                 break;
               default:
                 break;
