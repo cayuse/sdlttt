@@ -16,7 +16,7 @@ private:
     
     int exWins  = 0; // init no wins for X
     int ohWins  = 0; // init no wins for O
-    std::string boardBG = "othelloboard.png";
+    std::string boardBG = "connectboard.png";
     std::string exPiece = "connectex.png";
     std::string ohPiece = "connectoh.png";
 
