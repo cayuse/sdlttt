@@ -1,20 +1,20 @@
 #include "pente.h"
 
 // these functions just return the name of the file defined in the header so the game engine can load them up.
-std::string Go::getBoardBG()
+std::string Pente::getBoardBG()
 {
   return boardBG;
 }
-std::string Go::getExPiece()
+std::string Pente::getExPiece()
 {
   return exPiece;
 } 
-std::string Go::getOhPiece()
+std::string Pente::getOhPiece()
 {
   return ohPiece;
 }
 
-int Go::getBoardHW()
+int Pente::getBoardHW()
 {
   return boardHW;
 }
@@ -39,7 +39,7 @@ int Go::getBoardHW()
  *  it puts the current player's "token" in that column  _AND_
  *  it changes the current_player variable (to the other player)
  */
-bool Go::move(int horiz, int vert)
+bool Pente::move(int horiz, int vert)
 {
   //stub return to supress whining
   if (board[horiz][vert] == MT)
@@ -56,7 +56,7 @@ bool Go::move(int horiz, int vert)
  *  this method simply returns a Marker corresponding to whose turn it is:
  *  EX for X || OH for O
  */
-Marker Go::getCurrentPlayer()
+Marker Pente::getCurrentPlayer()
 {
   //stub return to supress whining
   return current_player;
@@ -74,7 +74,7 @@ Marker Go::getCurrentPlayer()
  *  (if) there has been a winner:
  *       player is set to EX for X winner and OH for O Winner
  */
-bool Go::checkForWins(Marker &player)
+bool Pente::checkForWins(Marker &player)
 {
   //stub return to supress whining
   return false;
@@ -94,7 +94,7 @@ bool Go::checkForWins(Marker &player)
  * (if) this is not appropriate and the board should not be marked
  *      return false (e.g. othello)
 */
-bool Go::getWinDimension(int &x1, int &y1, int &x2, int &y2)
+bool Pente::getWinDimension(int &x1, int &y1, int &x2, int &y2)
 {
   //stub return to supress whining
   return false;
@@ -107,7 +107,7 @@ bool Go::getWinDimension(int &x1, int &y1, int &x2, int &y2)
  *
  *  resets the gamestate to initial settings
  */
-void Go::resetBoard()
+void Pente::resetBoard()
 {
   for (int outer = 0; outer < boardHW; outer++)
   {
@@ -125,7 +125,7 @@ void Go::resetBoard()
  *  just stores the current tally of wins for the
  *  players into the int references
  */
-void Go::getScores(int &xWins, int &oWins)
+void Pente::getScores(int &xWins, int &oWins)
 {
   
 }
@@ -143,7 +143,7 @@ void Go::getScores(int &xWins, int &oWins)
  *  [7][0] |   ...  | [7][7]
  *
  */
-Marker Go::getMarkerAt(int horiz, int vert)
+Marker Pente::getMarkerAt(int horiz, int vert)
 {
   return board[horiz][vert];
 }
