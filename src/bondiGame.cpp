@@ -9,10 +9,12 @@
 #ifdef USING_OSX_FRAMEWORKS
 #   include <SDL2/SDL.h>
 #   include <SDL2_image/SDL_image.h>
+#   include <SDL2_ttf/SDL_ttf.h>
 #else
 
 #   include <SDL.h>
 #   include <SDL_image.h>
+#   include <SDL_ttf.h>
 
 #endif
 
@@ -28,6 +30,11 @@ using cleanup_unique_ptr = std::unique_ptr<T, void (*)(T *)>;
 cleanup_unique_ptr<SDL_Texture>
         loadTexture(const std::string &file, SDL_Renderer *ren);
 
+// cargo culting the text renderererererizing thing.
+// need to at least make it not have to load the font every single time.
+cleanup_unique_ptr<SDL_Texture>
+        renderText(const std::string &message, const std::string &fontFile,
+                   SDL_Color color, int fontSize, SDL_Renderer *renderer)
 // function declarations
 void logSDLError(std::ostream &os, const std::string &msg);
 
@@ -82,6 +89,14 @@ int main(int argc, char **argv) {
   }
 
   atexit(IMG_Quit);
+  
+  // Init SDL TTF to display text
+  if ((TTF_Init() != 0) {
+    logSDLError(std::cout, "TTF_Init");
+    return 1;
+  }
+  
+  atexit(TTF_Quit);
 
   // not exactly sure how this works, its wrappng the window intit into some sort of templeted
   // pointer cleanup goodness
@@ -108,11 +123,17 @@ int main(int argc, char **argv) {
     logSDLError(std::cout, "CreateRenderer");
     return 1;
   }
+  
+  // create a 
 //############# END SDL INIT SEQUENCE #################
   // LOAD ALL THE Objects and Images
   const std::string backgroundPath = getResourcePath("backgrounds");
   const std::string boardPath = getResourcePath("boards");
   const std::string piecesPath = getResourcePath("pieces");
+  const std::string fontPath = getResourcePath("fonts");
+  
+  // SDL_Color = black
+  SDL_Color sdl_black = { 0, 0, 0, 255 };
 
   // background
   auto background = loadTexture(backgroundPath + "background.png", renderer.get());
@@ -248,6 +269,8 @@ int main(int argc, char **argv) {
         }
       }
     SDL_RenderClear(renderer.get());
+    SDL_Texture *image = renderText("TTF fonts are cool!", resPath + "Pink_Bunny_2.ttf", sdl_black, 64, renderer.get());
+    renderTexture(image, renderer, 165, 370);
     if (menu) {
       renderTexture(menuScreen.get(), renderer.get(), 0, 0);
     } else {
@@ -303,6 +326,43 @@ loadTexture(const std::string &file, SDL_Renderer *ren) {
     logSDLError(std::cout, "LoadTexture");
   }
   return cleanup_unique_ptr<SDL_Texture>(texture, SDL_DestroyTexture);
+}
+
+/**
+* Render the message we want to display to a texture for drawing
+* @param message The message we want to display
+* @param fontFile The font we want to use to render the text
+* @param color The color we want the text to be
+* @param fontSize The size we want the font to be
+* @param renderer The renderer to load the texture in
+* @return An SDL_Texture containing the rendered message, or nullptr if something went wrong
+*/
+cleanup_unique_ptr<SDL_Texture>
+renderText(const std::string &message, const std::string &fontFile,
+	SDL_Color color, int fontSize, SDL_Renderer *renderer)
+{
+	//Open the font
+	TTF_Font *font = TTF_OpenFont(fontFile.c_str(), fontSize);
+	if (font == nullptr){
+		logSDLError(std::cout, "TTF_OpenFont");
+		return nullptr;
+	}	
+	//We need to first render to a surface as that's what TTF_RenderText
+	//returns, then load that surface into a texture
+	SDL_Surface *surf = TTF_RenderText_Blended(font, message.c_str(), color);
+	if (surf == nullptr){
+		TTF_CloseFont(font);
+		logSDLError(std::cout, "TTF_RenderText");
+		return nullptr;
+	}
+	SDL_Texture *texture = SDL_CreateTextureFromSurface(renderer, surf);
+	if (texture == nullptr){
+		logSDLError(std::cout, "CreateTexture");
+	}
+	//Clean up the surface and font
+	SDL_FreeSurface(surf);
+	TTF_CloseFont(font);
+	return texture;
 }
 
 /**

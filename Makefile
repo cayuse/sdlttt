@@ -7,7 +7,7 @@ OBJDIR				= build
 SRCDIR				= src
 
 PKG_CONFIG			= pkg-config
-PKG_CONFIG_PKGS		= sdl2 SDL2_image
+PKG_CONFIG_PKGS		= sdl2 SDL2_image sdl2_ttf
 
 SDL2_CFLAGS			:= $(shell $(PKG_CONFIG) $(PKG_CONFIG_PKGS) --cflags)
 SDL2_LDFLAGS		:= $(shell $(PKG_CONFIG) $(PKG_CONFIG_PKGS) --libs)
@@ -20,7 +20,7 @@ ifeq ($(strip $(SDL2_CFLAGS)),)
 		# on Mac OS X, fall back to trying a framework.
 		ifeq ($(shell uname -s),Darwin)
 			SDL2_CFLAGS		= -DUSING_OSX_FRAMEWORKS=1
-			SDL2_LDFLAGS	= -framework SDL2 -framework SDL2_image
+			SDL2_LDFLAGS	= -framework SDL2 -framework SDL2_image -framework SDL2_ttf
 		endif
 	endif
 endif
