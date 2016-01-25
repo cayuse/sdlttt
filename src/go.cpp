@@ -1,5 +1,10 @@
 #include "go.h"
 
+// since idk if this game will get written.. and if it does, mok isn't exactly going to be confused about what's goingon
+// i'm going use this particular "game" to just load up with garbage test-ish code that will make it play-with-able.. but not really
+// a playable game.. if in future someone decides to write this class, feel free to strip out any and all garbage
+
+
 // these functions just return the name of the file defined in the header so the game engine can load them up.
 std::string Go::getBoardBG()
 {
@@ -42,7 +47,13 @@ int Go::getBoardHW()
 bool Go::move(int horiz, int vert)
 {
   //stub return to supress whining
-  return true;
+  if (board[horiz][vert] == MT)
+  {
+    board[horiz][vort] = current_player;
+    current_player = (current_player == EX) ? OH : EX;
+    return true;
+  }
+  return false;
 }
 
 /*
@@ -53,7 +64,7 @@ bool Go::move(int horiz, int vert)
 Marker Go::getCurrentPlayer()
 {
   //stub return to supress whining
-  return MT;
+  return current_player;
 }
 
 /*
@@ -71,7 +82,7 @@ Marker Go::getCurrentPlayer()
 bool Go::checkForWins(Marker &player)
 {
   //stub return to supress whining
-  return true;
+  return false;
 }
 
 /*
@@ -91,7 +102,7 @@ bool Go::checkForWins(Marker &player)
 bool Go::getWinDimension(int &x1, int &y1, int &x2, int &y2)
 {
   //stub return to supress whining
-  return true;
+  return false;
 }
 
 /*
@@ -103,7 +114,13 @@ bool Go::getWinDimension(int &x1, int &y1, int &x2, int &y2)
  */
 void Go::resetBoard()
 {
-  
+  for (int outer = 0; outer < boardHW; outer++)
+  {
+    for (int inner = 0; inner < boardHW; inner++ )
+    {
+      board[outer][inner] = MT;
+    }
+  }
 }
 
 /*

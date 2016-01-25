@@ -230,21 +230,35 @@ int main(int argc, char **argv) {
             break;
         }
       }
-    }
     SDL_RenderClear(renderer.get());
     if (menu) {
       renderTexture(menuScreen.get(), renderer.get(), 0, 0);
     } else {
       renderTexture(background.get(), renderer.get(), 0, 0);
       renderTexture(currentGame->board.get(), renderer.get(), BOARD_X, BOARD_Y);
+      Marker currentSquare;
+      for (int outer = 0; outer < currentGame->getBoardHW(); outer++)
+      {
+        for (int inner = 0; inner < currentGame->getBoardHW(); inner++)
+        {
+          currentSquare = currentGame->getMarkerAt(outer, inner);
+          if (currentSquare == EX)
+            renderTextureXY(currentGame->ex.get(), renderer.get(), currentGame->game->getBoardHW(), outer, inner);
+          else if (currentSquare == OH)
+            renderTextureXY(currentGame->oh.get(), renderer.get(), currentGame->game->getBoardHW(), outer, inner);
+        }
+      }
+/*
       renderTextureXY(currentGame->ex.get(), renderer.get(), currentGame->game->getBoardHW(), 0, 0);
       renderTextureXY(currentGame->ex.get(), renderer.get(), currentGame->game->getBoardHW(), 1, 1);
       renderTextureXY(currentGame->oh.get(), renderer.get(), currentGame->game->getBoardHW(), 0, 2);
       renderTextureXY(currentGame->oh.get(), renderer.get(), currentGame->game->getBoardHW(), 0, 2);
       renderTextureXY(currentGame->oh.get(), renderer.get(), currentGame->game->getBoardHW(), 7, 7);
       renderTextureXY(currentGame->oh.get(), renderer.get(), currentGame->game->getBoardHW(), 6, 6);
+*/
     }
     SDL_RenderPresent(renderer.get());
+    }
   }
   return 0;
 }
