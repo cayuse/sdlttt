@@ -4,6 +4,7 @@
 #include "othello.h"
 #include "connect.h"
 #include "go.h"
+#include "pente.h"
 
 #ifdef USING_OSX_FRAMEWORKS
 #   include <SDL2/SDL.h>
@@ -166,6 +167,15 @@ int main(int argc, char **argv) {
   if (go.board == nullptr || go.ex == nullptr || go.oh == nullptr) {
     return 1;
   }
+  Pente pente_g;
+  Game pente(&pente_g,
+               loadTexture(boardPath + pente_g.getBoardBG(), renderer.get()),
+               loadTexture(piecesPath + pente_g.getExPiece(), renderer.get()),
+               loadTexture(piecesPath + pente_g.getOhPiece(), renderer.get())
+  );
+  if (pente.board == nullptr || pente.ex == nullptr || pente.oh == nullptr) {
+    return 1;
+  }
   Game *currentGame;
   SDL_Event event;
   int mouse_x = 0;
@@ -201,6 +211,10 @@ int main(int argc, char **argv) {
               case SDLK_4:
                 menu = false;
                 currentGame = &go;
+                break;
+              case SDLK_5:
+                menu = false;
+                currentGame = &pente;
                 break;
               default:
                 break;
