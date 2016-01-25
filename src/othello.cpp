@@ -19,6 +19,15 @@ int Othello::getBoardHW()
   return boardHW;
 }
 
+std::string Othello::exPlayerName()
+{
+  return exPlayer;
+}
+std::string Othello::ohPlayerName()
+{
+  return ohPlayer;
+}
+
 /*  bool move(int horiz, int vert)
  *  This method is used to place a move on the board.
  *  The move is given as a pair of ints, and references the board as such.
@@ -113,7 +122,8 @@ void Othello::resetBoard()
  */
 void Othello::getScores(int &xWins, int &oWins)
 {
-  
+  xWins = exWins;
+  oWins = ohWins; 
 }
 
 /*

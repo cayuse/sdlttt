@@ -24,6 +24,15 @@ int Go::getBoardHW()
   return boardHW;
 }
 
+std::string Go::exPlayerName()
+{
+  return exPlayer;
+}
+std::string Go::ohPlayerName()
+{
+  return ohPlayer;
+}
+
 /*  bool move(int horiz, int vert)
  *  This method is used to place a move on the board.
  *  The move is given as a pair of ints, and references the board as such.
@@ -130,7 +139,8 @@ void Go::resetBoard()
  */
 void Go::getScores(int &xWins, int &oWins)
 {
-  
+  xWins = exWins;
+  oWins = ohWins;
 }
 
 /*

@@ -19,6 +19,15 @@ int Pente::getBoardHW()
   return boardHW;
 }
 
+std::string Pente::exPlayerName()
+{
+  return exPlayer;
+}
+std::string Pente::ohPlayerName()
+{
+  return ohPlayer;
+}
+
 /*  bool move(int horiz, int vert)
  *  This method is used to place a move on the board.
  *  The move is given as a pair of ints, and references the board as such.
@@ -76,7 +85,13 @@ Marker Pente::getCurrentPlayer()
  */
 bool Pente::checkForWins(Marker &player)
 {
-  //stub return to supress whining
+  for (int outer = 0; outer < boardHW; outer++)
+  {
+    for (int inner = 0; inner < boardHW; inner++)
+    {
+      
+    }
+  }
   return false;
 }
 
@@ -118,6 +133,8 @@ void Pente::resetBoard()
   }
   // set initial move
   board[9][9] = OH;
+  // set initial player.. technically player 2, the first move is required
+  current_player = EX;
 }
 
 /*
@@ -127,7 +144,8 @@ void Pente::resetBoard()
  */
 void Pente::getScores(int &xWins, int &oWins)
 {
-  
+  xWins = exWins;
+  oWins = ohWins;
 }
 
 /*

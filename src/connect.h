@@ -19,7 +19,9 @@ private:
     std::string boardBG = "connectboard.png";
     std::string exPiece = "connectex.png";
     std::string ohPiece = "connectoh.png";
-
+    std::string exPlayer = "Black";
+    std::string ohPlayer = "Red";
+    
     Marker board [boardHW][boardHW] = { {MT} }; // init board as empty.
     Marker current_player = EX; // init as "its X's move"
     
@@ -28,6 +30,8 @@ public:
     std::string getExPiece();
     std::string getOhPiece();
     int getBoardHW();
+    std::string exPlayerName();
+    std::string ohPlayerName();
     bool move(int horiz, int vert);
     Marker getCurrentPlayer();
     bool checkForWins(Marker &player);

@@ -19,6 +19,15 @@ int Ttt::getBoardHW()
   return boardHW;
 }
 
+std::string Ttt::exPlayerName()
+{
+  return exPlayer;
+}
+std::string Ttt::ohPlayerName()
+{
+  return ohPlayer;
+}
+
 /*  bool move(int horiz, int vert)
  *  This method is used to place a move on the board.
  *  The move is given as a pair of ints, and references the board as such.
@@ -108,7 +117,8 @@ void Ttt::resetBoard()
  */
 void Ttt::getScores(int &xWins, int &oWins)
 {
-  
+  xWins = exWins;
+  oWins = ohWins;
 }
 
 /*

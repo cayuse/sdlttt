@@ -13,6 +13,8 @@ public:
     virtual std::string getExPiece() = 0;
     virtual std::string getOhPiece() = 0;
     virtual int getBoardHW() = 0;
+    virtual std::string exPlayerName() = 0;
+    virtual std::string ohPlayerName() = 0;
     virtual bool move(int horiz, int vert) = 0;
     virtual Marker getCurrentPlayer() = 0;
     virtual bool checkForWins(Marker &player) = 0;
