@@ -148,6 +148,5 @@ void Go::getScores(int &xWins, int &oWins)
  */
 Marker Go::getMarkerAt(int horiz, int vert)
 {
-  //stub return to supress whining
-  return EX;
+  return board[horiz][vert];
 }
