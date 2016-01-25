@@ -49,7 +49,7 @@ bool Go::move(int horiz, int vert)
   //stub return to supress whining
   if (board[horiz][vert] == MT)
   {
-    board[horiz][vort] = current_player;
+    board[horiz][vert] = current_player;
     current_player = (current_player == EX) ? OH : EX;
     return true;
   }
