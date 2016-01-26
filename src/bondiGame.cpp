@@ -137,7 +137,7 @@ loadFont(const sdt::string &file, int fontSize){
 */
     const std::string fontPath = getResourcePath("fonts");
     std::string fontFile = fontPath + "Pink_Bunny_2.ttf";
-    SDL_Font *font = TTF_OpenFont(fontFile.c_str(), FONTSIZE);
+    TTF_Font *font = TTF_OpenFont(fontFile.c_str(), FONTSIZE);
     if (font == nullptr){
         logSDLError(std::cout, "TTF_OpenFont");
     } 
