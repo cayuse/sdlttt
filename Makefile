@@ -7,7 +7,7 @@ OBJDIR				= build
 SRCDIR				= src
 
 PKG_CONFIG			= pkg-config
-PKG_CONFIG_PKGS		= sdl2 SDL2_image sdl2_ttf
+PKG_CONFIG_PKGS		= sdl2 SDL2_image SDL2_ttf
 
 SDL2_CFLAGS			:= $(shell $(PKG_CONFIG) $(PKG_CONFIG_PKGS) --cflags)
 SDL2_LDFLAGS		:= $(shell $(PKG_CONFIG) $(PKG_CONFIG_PKGS) --libs)
