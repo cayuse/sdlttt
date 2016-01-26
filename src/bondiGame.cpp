@@ -28,13 +28,13 @@ using cleanup_unique_ptr = std::unique_ptr<T, void (*)(T *)>;
 // an alias for an otherwise cumbersome template type:
 // a unique_ptr with simple function pointer as deleter
 cleanup_unique_ptr<SDL_Texture>
-        loadTexture(const std::string &file, SDL_Renderer *ren);
+    loadTexture(const std::string &file, SDL_Renderer *ren);
 
 // cargo culting the text renderererererizing thing.
 // need to at least make it not have to load the font every single time.
 cleanup_unique_ptr<SDL_Texture>
-        renderText(const std::string &message, TTF_Font *font,
-                   SDL_Color color, SDL_Renderer *renderer);
+    renderText(const std::string &message, TTF_Font *font,
+               SDL_Color color, SDL_Renderer *renderer);
 
 // function declarations
 void logSDLError(std::ostream &os, const std::string &msg);
@@ -57,10 +57,10 @@ struct Game {
        cleanup_unique_ptr<SDL_Texture> board,
        cleanup_unique_ptr<SDL_Texture> ex,
        cleanup_unique_ptr<SDL_Texture> oh)
-          : game(game),
-            board(std::move(board)),
-            ex(std::move(ex)),
-            oh(std::move(oh)) { }
+      : game(game),
+        board(std::move(board)),
+        ex(std::move(ex)),
+        oh(std::move(oh)) { }
 };
 
 
@@ -71,7 +71,7 @@ const int SCREEN_HEIGHT = 600;
 const int BOARD_SIZE = 500;
 const int BOARD_X = 270;
 const int BOARD_Y = 70;
-const int FONTSIZE = 48;
+const int FONTSIZE = 24;
 
 
 int main(int argc, char **argv) {
@@ -91,24 +91,24 @@ int main(int argc, char **argv) {
   }
 
   atexit(IMG_Quit);
-  
+
   // Init SDL TTF to display text
   if (TTF_Init() != 0) {
     logSDLError(std::cout, "TTF_Init");
     return 1;
   }
-  
+
   atexit(TTF_Quit);
 
   // not exactly sure how this works, its wrappng the window intit into some sort of templeted
   // pointer cleanup goodness
   cleanup_unique_ptr<SDL_Window> window(
-          SDL_CreateWindow(
-                  "Bondi Games",
-                  50, 50,
-                  SCREEN_WIDTH, SCREEN_HEIGHT,
-                  SDL_WINDOW_SHOWN),
-          SDL_DestroyWindow);
+      SDL_CreateWindow(
+          "Bondi Games",
+          50, 50,
+          SCREEN_WIDTH, SCREEN_HEIGHT,
+          SDL_WINDOW_SHOWN),
+      SDL_DestroyWindow);
   if (window == nullptr) {
     logSDLError(std::cout, "CreateWindow");
     return 1;
@@ -116,11 +116,11 @@ int main(int argc, char **argv) {
 
   // same as above, but wrapping the creation of a renderer into a pointer cleaner upper???
   cleanup_unique_ptr<SDL_Renderer> renderer(
-          SDL_CreateRenderer(
-                  window.get(),
-                  -1,
-                  SDL_RENDERER_ACCELERATED | SDL_RENDERER_PRESENTVSYNC),
-          SDL_DestroyRenderer);
+      SDL_CreateRenderer(
+          window.get(),
+          -1,
+          SDL_RENDERER_ACCELERATED | SDL_RENDERER_PRESENTVSYNC),
+      SDL_DestroyRenderer);
   if (renderer == nullptr) {
     logSDLError(std::cout, "CreateRenderer");
     return 1;
@@ -135,23 +135,25 @@ loadFont(const sdt::string &file, int fontSize){
     }
     return cleanup_unique_ptr<SDL_Font>(font, SDL_DestroyFont);
 */
-    const std::string fontPath = getResourcePath("fonts");
-    std::string fontFile = fontPath + "Pink_Bunny_2.ttf";
-    TTF_Font *font = TTF_OpenFont(fontFile.c_str(), FONTSIZE);
-    if (font == nullptr){
-        logSDLError(std::cout, "TTF_OpenFont");
-    } 
-  
-  
-  // create a 
+  const std::string fontPath = getResourcePath("fonts");
+  std::string fontFile = fontPath + "Pink_Bunny_2.ttf";
+  TTF_Font *font = TTF_OpenFont(fontFile.c_str(), FONTSIZE);
+  if (font == nullptr) {
+    logSDLError(std::cout, "TTF_OpenFont");
+    return 1;
+  }
+  //atexit(TTF_CloseFont(font));
+
+
+  // create a
 //############# END SDL INIT SEQUENCE #################
   // LOAD ALL THE Objects and Images
   const std::string backgroundPath = getResourcePath("backgrounds");
   const std::string boardPath = getResourcePath("boards");
   const std::string piecesPath = getResourcePath("pieces");
-  
+
   // SDL_Color = black
-  SDL_Color sdl_black = { 0, 0, 0, 255 };
+  SDL_Color sdl_black = {0, 0, 0, 255};
 
   // background
   auto background = loadTexture(backgroundPath + "background.png", renderer.get());
@@ -199,18 +201,18 @@ loadFont(const sdt::string &file, int fontSize){
 
   Go go_g;
   Game go(&go_g,
-               loadTexture(boardPath + go_g.getBoardBG(), renderer.get()),
-               loadTexture(piecesPath + go_g.getExPiece(), renderer.get()),
-               loadTexture(piecesPath + go_g.getOhPiece(), renderer.get())
+          loadTexture(boardPath + go_g.getBoardBG(), renderer.get()),
+          loadTexture(piecesPath + go_g.getExPiece(), renderer.get()),
+          loadTexture(piecesPath + go_g.getOhPiece(), renderer.get())
   );
   if (go.board == nullptr || go.ex == nullptr || go.oh == nullptr) {
     return 1;
   }
   Pente pente_g;
   Game pente(&pente_g,
-               loadTexture(boardPath + pente_g.getBoardBG(), renderer.get()),
-               loadTexture(piecesPath + pente_g.getExPiece(), renderer.get()),
-               loadTexture(piecesPath + pente_g.getOhPiece(), renderer.get())
+             loadTexture(boardPath + pente_g.getBoardBG(), renderer.get()),
+             loadTexture(piecesPath + pente_g.getExPiece(), renderer.get()),
+             loadTexture(piecesPath + pente_g.getOhPiece(), renderer.get())
   );
   if (pente.board == nullptr || pente.ex == nullptr || pente.oh == nullptr) {
     return 1;
@@ -277,8 +279,7 @@ loadFont(const sdt::string &file, int fontSize){
           case SDL_MOUSEBUTTONDOWN:
             mouse_x = event.button.x;
             mouse_y = event.button.y;
-            if ( getClickedCell(currentGame->game->getBoardHW(), mouse_x, mouse_y, clicked_x, clicked_y) )
-            {
+            if (getClickedCell(currentGame->game->getBoardHW(), mouse_x, mouse_y, clicked_x, clicked_y)) {
               currentGame->game->move(clicked_x, clicked_y);
             }
             break;
@@ -286,24 +287,27 @@ loadFont(const sdt::string &file, int fontSize){
             break;
         }
       }
-    SDL_RenderClear(renderer.get());
-    if (menu) {
-      renderTexture(menuScreen.get(), renderer.get(), 0, 0);
-    } else {
-      renderTexture(background.get(), renderer.get(), 0, 0);
-      renderTexture(currentGame->board.get(), renderer.get(), BOARD_X, BOARD_Y);
-      Marker currentSquare;
-      for (int outer = 0; outer < currentGame->game->getBoardHW(); outer++)
-      {
-        for (int inner = 0; inner < currentGame->game->getBoardHW(); inner++)
-        {
-          currentSquare = currentGame->game->getMarkerAt(outer, inner);
-          if (currentSquare == EX)
-            renderTextureXY(currentGame->ex.get(), renderer.get(), currentGame->game->getBoardHW(), outer, inner);
-          else if (currentSquare == OH)
-            renderTextureXY(currentGame->oh.get(), renderer.get(), currentGame->game->getBoardHW(), outer, inner);
+      SDL_RenderClear(renderer.get());
+      if (menu) {
+        renderTexture(menuScreen.get(), renderer.get(), 0, 0);
+        cleanup_unique_ptr<SDL_Texture> image = renderText(
+            "Amazing Menu System!!\n\nHit 1 for Tic Tac Toe\nHit 2 for Othello\nHit 3 for Connect4\nHit 4 for Go\nHit 5 for Pente\n\nHit Esc to return", font, sdl_black, renderer.get());
+        renderTexture(image.get(), renderer.get(), 300, 200);
+      } else {
+        renderTexture(background.get(), renderer.get(), 0, 0);
+        renderTexture(currentGame->board.get(), renderer.get(), BOARD_X, BOARD_Y);
+        Marker currentSquare;
+        for (int outer = 0; outer < currentGame->game->getBoardHW(); outer++) {
+          for (int inner = 0; inner < currentGame->game->getBoardHW(); inner++) {
+            currentSquare = currentGame->game->getMarkerAt(outer, inner);
+            if (currentSquare == EX)
+              renderTextureXY(currentGame->ex.get(), renderer.get(), currentGame->game->getBoardHW(),
+                              outer, inner);
+            else if (currentSquare == OH)
+              renderTextureXY(currentGame->oh.get(), renderer.get(), currentGame->game->getBoardHW(),
+                              outer, inner);
+          }
         }
-      }
 /*
       renderTextureXY(currentGame->ex.get(), renderer.get(), currentGame->game->getBoardHW(), 0, 0);
       renderTextureXY(currentGame->ex.get(), renderer.get(), currentGame->game->getBoardHW(), 1, 1);
@@ -312,10 +316,8 @@ loadFont(const sdt::string &file, int fontSize){
       renderTextureXY(currentGame->oh.get(), renderer.get(), currentGame->game->getBoardHW(), 7, 7);
       renderTextureXY(currentGame->oh.get(), renderer.get(), currentGame->game->getBoardHW(), 6, 6);
 */
-    }
-      cleanup_unique_ptr<SDL_Texture> image = renderText("TTF fonts are cool!", font, sdl_black, renderer.get());
-      renderTexture(image.get(), renderer.get(), 165, 370);
-    SDL_RenderPresent(renderer.get());
+      }
+      SDL_RenderPresent(renderer.get());
     }
   }
   return 0;
@@ -356,23 +358,21 @@ loadTexture(const std::string &file, SDL_Renderer *ren) {
 */
 cleanup_unique_ptr<SDL_Texture>
 renderText(const std::string &message, TTF_Font *font,
-	SDL_Color color, SDL_Renderer *renderer)
-{
-	//We need to first render to a surface as that's what TTF_RenderText
-	//returns, then load that surface into a texture
-	SDL_Surface *surf = TTF_RenderText_Blended(font, message.c_str(), color);
-	if (surf == nullptr){
-		TTF_CloseFont(font);
-		logSDLError(std::cout, "TTF_RenderText");
-	}
-	SDL_Texture *texture = SDL_CreateTextureFromSurface(renderer, surf);
-	if (texture == nullptr){
-		logSDLError(std::cout, "CreateTexture");
-	}
-	//Clean up the surface and font
-	SDL_FreeSurface(surf);
-	TTF_CloseFont(font);
-	return cleanup_unique_ptr<SDL_Texture>(texture, SDL_DestroyTexture);
+           SDL_Color color, SDL_Renderer *renderer) {
+  //We need to first render to a surface as that's what TTF_RenderText
+  //returns, then load that surface into a texture
+  SDL_Surface *surf = TTF_RenderText_Blended_Wrapped(font, message.c_str(), color, 500);
+  if (surf == nullptr) {
+    TTF_CloseFont(font);
+    logSDLError(std::cout, "TTF_RenderText");
+  }
+  SDL_Texture *texture = SDL_CreateTextureFromSurface(renderer, surf);
+  if (texture == nullptr) {
+    logSDLError(std::cout, "CreateTexture");
+  }
+  //Clean up the surface and font
+  SDL_FreeSurface(surf);
+  return cleanup_unique_ptr<SDL_Texture>(texture, SDL_DestroyTexture);
 }
 
 /**
@@ -435,26 +435,25 @@ void renderTextureXY(SDL_Texture *tex, SDL_Renderer *ren, int hw, int x, int y) 
 }
 
 // returns false if it didn't get a valid square
-bool getClickedCell(int hw, int mousex, int mousey, int &clickedx, int &clickedy)
-{
+bool getClickedCell(int hw, int mousex, int mousey, int &clickedx, int &clickedy) {
   clickedx = -1;
   clickedy = -1;
   for (int i = 0; i < hw; i++) {
-    int cellLeft  = BOARD_X + (BOARD_SIZE * i) / hw;
-    int cellRight = BOARD_X + (BOARD_SIZE * (i + 1) ) / hw;
+    int cellLeft = BOARD_X + (BOARD_SIZE * i) / hw;
+    int cellRight = BOARD_X + (BOARD_SIZE * (i + 1)) / hw;
     if (mousex > cellLeft && mousex < cellRight) {
       clickedx = i;
     }
   }
   for (int i = 0; i < hw; i++) {
-    int cellLeft  = BOARD_Y + (BOARD_SIZE * i) / hw;
-    int cellRight = BOARD_Y + (BOARD_SIZE * (i + 1) ) / hw;
+    int cellLeft = BOARD_Y + (BOARD_SIZE * i) / hw;
+    int cellRight = BOARD_Y + (BOARD_SIZE * (i + 1)) / hw;
     if (mousey > cellLeft && mousey < cellRight) {
       clickedy = i;
     }
-  } 
+  }
 
-  if (clickedx >= 0 && clickedy >= 0){
+  if (clickedx >= 0 && clickedy >= 0) {
     return true;
   } else {
     return false;

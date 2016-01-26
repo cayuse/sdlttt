@@ -32,7 +32,6 @@
 *.app
 
 #some clang bs
-CMakeLists.txt
 
 
 ################
