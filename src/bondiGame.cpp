@@ -33,8 +33,8 @@ cleanup_unique_ptr<SDL_Texture>
 // cargo culting the text renderererererizing thing.
 // need to at least make it not have to load the font every single time.
 cleanup_unique_ptr<SDL_Texture>
-        renderText(const std::string &message, const std::string &fontFile,
-                   SDL_Color color, int fontSize, SDL_Renderer *renderer)
+        renderText(const std::string &message, TTF_Font *font,
+                   SDL_Color color, SDL_Renderer *renderer);
 // function declarations
 void logSDLError(std::ostream &os, const std::string &msg);
 
@@ -70,6 +70,7 @@ const int SCREEN_HEIGHT = 600;
 const int BOARD_SIZE = 500;
 const int BOARD_X = 270;
 const int BOARD_Y = 70;
+const int FONTSIZE = 48;
 
 
 int main(int argc, char **argv) {
@@ -91,7 +92,7 @@ int main(int argc, char **argv) {
   atexit(IMG_Quit);
   
   // Init SDL TTF to display text
-  if ((TTF_Init() != 0) {
+  if (TTF_Init() != 0) {
     logSDLError(std::cout, "TTF_Init");
     return 1;
   }
@@ -102,7 +103,7 @@ int main(int argc, char **argv) {
   // pointer cleanup goodness
   cleanup_unique_ptr<SDL_Window> window(
           SDL_CreateWindow(
-                  "Tic Tac Toe",
+                  "Bondi Games",
                   50, 50,
                   SCREEN_WIDTH, SCREEN_HEIGHT,
                   SDL_WINDOW_SHOWN),
@@ -123,14 +124,25 @@ int main(int argc, char **argv) {
     logSDLError(std::cout, "CreateRenderer");
     return 1;
   }
-  
+  //Open the font
+  const std::string fontPath = getResourcePath("fonts");
+  std::string fontFile = fontPath + "Pink_Bunny_2.ttf";
+
+  cleanup_unique_ptr<TTF_Font> font(
+          TTF_OpenFont(
+                  fontFile.c_str(),
+                  FONTSIZE)
+  );
+  if (font == nullptr){
+    logSDLError(std::cout, "TTF_OpenFont");
+  }
+
   // create a 
 //############# END SDL INIT SEQUENCE #################
   // LOAD ALL THE Objects and Images
   const std::string backgroundPath = getResourcePath("backgrounds");
   const std::string boardPath = getResourcePath("boards");
   const std::string piecesPath = getResourcePath("pieces");
-  const std::string fontPath = getResourcePath("fonts");
   
   // SDL_Color = black
   SDL_Color sdl_black = { 0, 0, 0, 255 };
@@ -269,8 +281,6 @@ int main(int argc, char **argv) {
         }
       }
     SDL_RenderClear(renderer.get());
-    SDL_Texture *image = renderText("TTF fonts are cool!", resPath + "Pink_Bunny_2.ttf", sdl_black, 64, renderer.get());
-    renderTexture(image, renderer, 165, 370);
     if (menu) {
       renderTexture(menuScreen.get(), renderer.get(), 0, 0);
     } else {
@@ -297,6 +307,8 @@ int main(int argc, char **argv) {
       renderTextureXY(currentGame->oh.get(), renderer.get(), currentGame->game->getBoardHW(), 6, 6);
 */
     }
+      cleanup_unique_ptr<SDL_Texture> image = renderText("TTF fonts are cool!", font.get(), sdl_black, renderer.get());
+      renderTexture(image.get(), renderer.get(), 165, 370);
     SDL_RenderPresent(renderer.get());
     }
   }
@@ -333,27 +345,19 @@ loadTexture(const std::string &file, SDL_Renderer *ren) {
 * @param message The message we want to display
 * @param fontFile The font we want to use to render the text
 * @param color The color we want the text to be
-* @param fontSize The size we want the font to be
 * @param renderer The renderer to load the texture in
 * @return An SDL_Texture containing the rendered message, or nullptr if something went wrong
 */
 cleanup_unique_ptr<SDL_Texture>
-renderText(const std::string &message, const std::string &fontFile,
-	SDL_Color color, int fontSize, SDL_Renderer *renderer)
+renderText(const std::string &message, TTF_Font *font,
+	SDL_Color color, SDL_Renderer *renderer)
 {
-	//Open the font
-	TTF_Font *font = TTF_OpenFont(fontFile.c_str(), fontSize);
-	if (font == nullptr){
-		logSDLError(std::cout, "TTF_OpenFont");
-		return nullptr;
-	}	
 	//We need to first render to a surface as that's what TTF_RenderText
 	//returns, then load that surface into a texture
 	SDL_Surface *surf = TTF_RenderText_Blended(font, message.c_str(), color);
 	if (surf == nullptr){
 		TTF_CloseFont(font);
 		logSDLError(std::cout, "TTF_RenderText");
-		return nullptr;
 	}
 	SDL_Texture *texture = SDL_CreateTextureFromSurface(renderer, surf);
 	if (texture == nullptr){
@@ -362,7 +366,7 @@ renderText(const std::string &message, const std::string &fontFile,
 	//Clean up the surface and font
 	SDL_FreeSurface(surf);
 	TTF_CloseFont(font);
-	return texture;
+	return cleanup_unique_ptr<SDL_Texture>(texture, SDL_DestroyTexture);
 }
 
 /**
