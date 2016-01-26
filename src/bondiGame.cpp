@@ -35,6 +35,7 @@ cleanup_unique_ptr<SDL_Texture>
 cleanup_unique_ptr<SDL_Texture>
         renderText(const std::string &message, TTF_Font *font,
                    SDL_Color color, SDL_Renderer *renderer);
+
 // function declarations
 void logSDLError(std::ostream &os, const std::string &msg);
 
@@ -125,18 +126,23 @@ int main(int argc, char **argv) {
     return 1;
   }
   //Open the font
-  const std::string fontPath = getResourcePath("fonts");
-  std::string fontFile = fontPath + "Pink_Bunny_2.ttf";
-
-  cleanup_unique_ptr<TTF_Font> font(
-          TTF_OpenFont(
-                  fontFile.c_str(),
-                  FONTSIZE)
-  );
-  if (font == nullptr){
-    logSDLError(std::cout, "TTF_OpenFont");
-  }
-
+/*
+cleanup_unique_ptr<TTF_Font>
+loadFont(const sdt::string &file, int fontSize){
+    SDL_Font *font = TTF_OpenFont(file.c_str(), fontSize);
+    if (font == nullptr){
+        logSDLError(std::cout, "TTF_OpenFont");
+    }
+    return cleanup_unique_ptr<SDL_Font>(font, SDL_DestroyFont);
+*/
+    const std::string fontPath = getResourcePath("fonts");
+    std::string fontFile = fontPath + "Pink_Bunny_2.ttf";
+    SDL_Font *font = TTF_OpenFont(fontFile.c_str(), FONTSIZE);
+    if (font == nullptr){
+        logSDLError(std::cout, "TTF_OpenFont");
+    } 
+  
+  
   // create a 
 //############# END SDL INIT SEQUENCE #################
   // LOAD ALL THE Objects and Images
@@ -307,7 +313,7 @@ int main(int argc, char **argv) {
       renderTextureXY(currentGame->oh.get(), renderer.get(), currentGame->game->getBoardHW(), 6, 6);
 */
     }
-      cleanup_unique_ptr<SDL_Texture> image = renderText("TTF fonts are cool!", font.get(), sdl_black, renderer.get());
+      cleanup_unique_ptr<SDL_Texture> image = renderText("TTF fonts are cool!", font, sdl_black, renderer.get());
       renderTexture(image.get(), renderer.get(), 165, 370);
     SDL_RenderPresent(renderer.get());
     }
