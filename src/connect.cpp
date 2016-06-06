@@ -142,5 +142,5 @@ void Connect::getScores(int &xWins, int &oWins)
 Marker Connect::getMarkerAt(int horiz, int vert)
 {
   //stub return to supress whining
-  return EX;
+  return MT;
 }

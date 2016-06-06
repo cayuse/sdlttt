@@ -4,7 +4,7 @@
 #include <string>
 
 
-enum Marker { MT, EX, OH};
+enum Marker { MT, EX, OH };
 
 class bondiGameInterface
 {
