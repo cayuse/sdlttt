@@ -227,7 +227,8 @@ loadFont(const sdt::string &file, int fontSize){
   bool menu = true; // start with the menu system
   bool quit = false;
   while (!quit) {
-    while (SDL_PollEvent(&event)) {
+ //   while (SDL_PollEvent(&event)) {
+      SDL_WaitEvent(&event);
       if (menu) { // if the menu is on, do these things
         switch (event.type) {
           /* Look for a keypress */
@@ -318,7 +319,7 @@ loadFont(const sdt::string &file, int fontSize){
 */
       }
       SDL_RenderPresent(renderer.get());
-    }
+   // }
   }
   return 0;
 }
