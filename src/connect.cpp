@@ -8,7 +8,7 @@ std::string Connect::getBoardBG()
 std::string Connect::getExPiece()
 {
   return exPiece;
-} 
+}
 std::string Connect::getOhPiece()
 {
   return ohPiece;
@@ -43,14 +43,13 @@ std::string Connect::ohPlayerName()
  *
  *
  *  (if) the column for the move is full, then the method returns FALSE
- *  
+ *
  *  (if) the column has room, then the method returns TRUE  _AND_
  *  it puts the current player's "token" in that column  _AND_
  *  it changes the current_player variable (to the other player)
  */
 bool Connect::move(int horiz, int vert)
 {
-  //stub return to supress whining
   return true;
 }
 
@@ -70,7 +69,7 @@ Marker Connect::getCurrentPlayer()
  *  this method checks the status of the game board and
  *  returns information based on that status.
  *
- *  (if) the game has become a catsgame then return bool = TRUE 
+ *  (if) the game has become a catsgame then return bool = TRUE
  *  (if) catsgame or no player has won, then
  *       player will bet set to MT
  *
@@ -90,10 +89,10 @@ bool Connect::checkForWins(Marker &player)
  * in ttt that might be (0,0),(3,3) or (0,0),(0,3) whatever
  * it will be slightly more interesting in something like
  * connect 4 where it can be any 4 anywhere in the field.
- * 
+ *
  * (if) this is an appropriate way to score a win set return true
  *      and a line will be procedurarly drawn over the covered area
- *      
+ *
  * (if) this is not appropriate and the board should not be marked
  *      return false (e.g. othello)
 */
@@ -112,7 +111,7 @@ bool Connect::getWinDimension(int &x1, int &y1, int &x2, int &y2)
  */
 void Connect::resetBoard()
 {
-  
+
 }
 
 /*

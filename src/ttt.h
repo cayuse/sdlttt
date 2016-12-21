@@ -14,7 +14,8 @@ private:
     */
 
     static constexpr int boardHW = 3; // height/width of board
-    
+
+    int numOfMoves = 0;
     int exWins  = 0; // init no wins for X
     int ohWins  = 0; // init no wins for O
     std::string boardBG = "tttboard.png";
@@ -24,7 +25,7 @@ private:
     std::string ohPlayer = "O";
     Marker board [boardHW][boardHW] = { {MT} }; // init board as empty.
     Marker current_player = EX; // init as "its X's move"
-    
+
 public:
     std::string getBoardBG();
     std::string getExPiece();

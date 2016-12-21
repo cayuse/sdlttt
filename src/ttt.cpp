@@ -8,17 +8,15 @@ std::string Ttt::getBoardBG()
 std::string Ttt::getExPiece()
 {
   return exPiece;
-} 
+}
 std::string Ttt::getOhPiece()
 {
   return ohPiece;
 }
-
 int Ttt::getBoardHW()
 {
   return boardHW;
 }
-
 std::string Ttt::exPlayerName()
 {
   return exPlayer;
@@ -38,14 +36,50 @@ std::string Ttt::ohPlayerName()
  *  [2][0] | [2][1] | [2][2]
  *
  *  (if) the location for the move is taken, then the method returns FALSE
- *  
+ *
  *  (if) the location is available, then the method returns TRUE  _AND_
  *  it puts the current player's "token" on that spot _AND_
  *  it changes the current_player variable (to the other player)
  */
 bool Ttt::move(int horiz, int vert)
 {
-  //stub return to supress whining
+  if(getMarkerAt(horiz, vert) != MT)
+  {
+    return false;
+  }
+  board[horiz][vert] = current_player;
+  numOfMoves++;
+  bool win = checkForWins(current_player);
+  if(win == true)
+  {
+    resetBoard();
+    if(current_player == EX)
+    {
+      exWins++;
+      current_player = EX;
+    }
+    if(current_player == OH)
+    {
+      ohWins++;
+      current_player = OH;
+    }
+    if(numOfMoves == 9)
+    {
+      current_player = EX;
+    }
+    numOfMoves = 0;
+  }
+  if(win == false)
+  {
+    if(current_player == EX)
+    {
+      current_player = OH;
+    }
+    else if(current_player == OH)
+    {
+      current_player = EX;
+    }
+  }
   return true;
 }
 
@@ -56,8 +90,7 @@ bool Ttt::move(int horiz, int vert)
  */
 Marker Ttt::getCurrentPlayer()
 {
-  //stub return to supress whining
-  return MT;
+  return current_player;
 }
 
 /*
@@ -65,7 +98,7 @@ Marker Ttt::getCurrentPlayer()
  *  this method checks the status of the game board and
  *  returns information based on that status.
  *
- *  (if) the game has become a catsgame then return bool = TRUE 
+ *  (if) the game has become a catsgame then return bool = TRUE
  *  (if) catsgame or no player has won, then
  *       player will bet set to MT
  *
@@ -74,8 +107,61 @@ Marker Ttt::getCurrentPlayer()
  */
 bool Ttt::checkForWins(Marker &player)
 {
-  //stub return to supress whining
-  return true;
+  int x1, y1, x2, y2;
+  if(board[0][0] == player && board[0][1] == player && board[0][2] == player)
+  {
+    x1 = 0, y1 = 0, x2 = 0, y2 = 2;
+    getWinDimension(x1, y1, x2, y2);
+    return true;
+  }
+  else if(board[1][0] == player && board[1][1] == player && board[1][2] == player)
+  {
+    x1 = 1, y1 = 0, x2 = 1, y2 = 2;
+    getWinDimension(x1, y1, x2, y2);
+    return true;
+  }
+  else if(board[2][0] == player && board[2][1] == player && board[2][2] == player)
+  {
+    x1 = 2, y1 = 0, x2 = 2, y2 = 2;
+    getWinDimension(x1, y1, x2, y2);
+    return true;
+  }
+  else if(board[0][0] == player && board[1][0] == player && board[2][0] == player)
+  {
+    x1 = 0, y1 = 0, x2 = 2, y2 = 0;
+    getWinDimension(x1, y1, x2, y2);
+    return true;
+  }
+  else if(board[0][1] == player && board[1][1] == player && board[2][1] == player)
+  {
+    x1 = 0, y1 = 1, x2 = 2, y2 = 1;
+    getWinDimension(x1, y1, x2, y2);
+    return true;
+  }
+  else if(board[0][2] == player && board[1][2] == player && board[2][2] == player)
+  {
+    x1 = 0, y1 = 2, x2 = 2, y2 = 2;
+    getWinDimension(x1, y1, x2, y2);
+    return true;
+  }
+  else if(board[0][0] == player && board[1][1] == player && board[2][2] == player)
+  {
+    x1 = 0, y1 = 0, x2 = 2, y2 = 2;
+    getWinDimension(x1, y1, x2, y2);
+    return true;
+  }
+  else if(board[2][0] == player && board[1][1] == player && board[0][2] == player)
+  {
+    x1 = 2, y1 = 0, x2 = 0, y2 = 2;
+    getWinDimension(x1, y1, x2, y2);
+    return true;
+  }
+  else if(numOfMoves == 9) // catsgame reached
+  {
+    return true;
+  }
+  else
+  return false;
 }
 
 /*
@@ -85,16 +171,15 @@ bool Ttt::checkForWins(Marker &player)
  * in ttt that might be (0,0),(2,2) or (0,0),(0,2) whatever
  * it will be slightly more interesting in something like
  * connect 4 where it can be any 4 anywhere in the field.
- * 
+ *
  * (if) this is an appropriate way to score a win set return true
  *      and a line will be procedurarly drawn over the covered area
- *      
+ *
  * (if) this is not appropriate and the board should not be marked
  *      return false (e.g. othello)
 */
 bool Ttt::getWinDimension(int &x1, int &y1, int &x2, int &y2)
 {
-  //stub return to supress whining
   return true;
 }
 
@@ -107,7 +192,15 @@ bool Ttt::getWinDimension(int &x1, int &y1, int &x2, int &y2)
  */
 void Ttt::resetBoard()
 {
-  
+  board[0][0] = MT;
+  board[0][1] = MT;
+  board[0][2] = MT;
+  board[1][0] = MT;
+  board[1][1] = MT;
+  board[1][2] = MT;
+  board[2][0] = MT;
+  board[2][1] = MT;
+  board[2][2] = MT;
 }
 
 /*
@@ -135,6 +228,5 @@ void Ttt::getScores(int &xWins, int &oWins)
  */
 Marker Ttt::getMarkerAt(int horiz, int vert)
 {
-  //stub return to supress whining
-  return EX;
+  return board[horiz][vert];
 }
